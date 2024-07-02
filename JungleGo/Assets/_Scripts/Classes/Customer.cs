@@ -22,27 +22,27 @@ public class Customer
 
     // TODO: Figure out collision and behavioral properties
 
-    public Customer(int id, string name)
+    public Customer(int id, string name, InventoryManager inventoryManager)
     {
         Id = id;
         Name = name;
         Basket = new Basket();
-        ShoppingList = GenerateShoppingList(); 
+        ShoppingList = GenerateShoppingList(inventoryManager); 
         Position = (0, 0);
     }
 
-    private List<Product> GenerateShoppingList()
+    private List<Product> GenerateShoppingList(InventoryManager inventoryManager)
     {
         ShoppingList = new List<Product>();
         // TODO: Generate random number of items within a set boundary 
         // Consider whether that should be static or if we want it the
         // boundary to vary based on something like difficulty, etc.
-        var maxProducts = ProductDatabase.Instance.ProductCount;
+        var maxProducts = inventoryManager.Stock.Count;
         var numProducts = Random.Range(1, maxProducts + 1);
 
-        for (int i = 0; i < maxProducts; i++)
+        for (int i = 0; i < numProducts; i++)
         {
-            var product = ProductDatabase.Instance.GetRandomProduct();
+            var product = inventoryManager.GetRandomProduct();
             if (!ShoppingList.Any(p => p.Id == product.Id))
             {
                 ShoppingList.Add(product);

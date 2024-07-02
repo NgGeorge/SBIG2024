@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < customersList.Length ; i++)
         {
-            Customer customer = new Customer((int)i + 1, customersList[i]);
+            Customer customer = new Customer((int)i + 1, customersList[i], Inventory);
             Customers.Add(customer);
         }
     }
