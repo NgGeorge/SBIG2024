@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour 
@@ -54,5 +55,11 @@ public class InventoryManager : MonoBehaviour
         // TODO: what happens if the product doesn't exist (highly unlikely edge case)
         // TODO: what happens if not enough product is in stock? 
         return false;
+    }
+
+    public Product GetRandomProduct()
+    {
+        var index = Random.Range(0, Stock.Count);
+        return Stock.Keys.ElementAt<Product>(index);
     }
 }
