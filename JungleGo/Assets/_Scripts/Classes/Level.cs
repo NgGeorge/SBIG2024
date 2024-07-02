@@ -4,7 +4,7 @@ using System.Text;
 
 class Level
 {
-    public int CustomerCount { get; set; }
+    public string[] CustomerList { get; set; }
     public List<int> ProductIds { get; set; }
     public int MaxProductCount { get; set; }
     public int DelayBetweenCustomerSec { get; set; }

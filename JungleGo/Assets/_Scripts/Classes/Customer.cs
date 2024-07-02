@@ -6,21 +6,29 @@ using UnityEngine;
 // Does this need to inherit MonoBehavior to control things like movements?
 public class Customer
 {
+    public int Id { get; private set; }
+
     public string Name { get; private set; }
+
     public List<Product> ShoppingList { get; private set;}
+
     public Basket Basket { get; private set; }
 
     private int _currentProductIndex = 0;
 
     public bool IsShoppingComplete = false;
+    
+    public (int, int) Position { get; private set; } 
 
     // TODO: Figure out collision and behavioral properties
 
-    public Customer(string name)
+    public Customer(int id, string name)
     {
+        Id = id;
         Name = name;
         Basket = new Basket();
         ShoppingList = GenerateShoppingList(); 
+        Position = (0, 0);
     }
 
     private List<Product> GenerateShoppingList()
@@ -107,6 +115,11 @@ public class Customer
         }
     }
 
+    public Product GetNextProductInList()
+    {
+        return ShoppingList[_currentProductIndex];
+    }
+
     private void FinishShopping()
     {
         // TODO: add any finishing tasks for the customer before leaving store
@@ -122,5 +135,13 @@ public class Customer
     {
         Debug.Log($"Customer {Name}: Deciding to purchase from shelf");
         return Random.value > .5;
+    }
+
+    
+    public void Move(int x, int y)
+    {
+        // TODO: animation should trigger and actual UI movement should happen here.
+        BoardManager.Instance.MoveCustomerInBoard(Position.Item1, Position.Item2, x, y, Id);
+        Position = (x,y);
     }
 }
