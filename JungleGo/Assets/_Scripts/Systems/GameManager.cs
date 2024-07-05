@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,11 +9,10 @@ public class GameManager : MonoBehaviour
 
     public List<Customer> Customers { get; private set; }
 
-    public InventoryManager Inventory{ get; private set; }
-
     internal List<Level> Levels { get; private set; }
 
     private int _currentLevelIndex = 0;
+    private System.Random random = new System.Random();
 
     private void Awake()
     {
@@ -30,11 +30,10 @@ public class GameManager : MonoBehaviour
     private void Initialize()
     {
         Customers = new List<Customer>();
-        Inventory = new InventoryManager();
 
         // Let's do dynamic level generation
         Levels = new List<Level>();
-        foreach (int i = 1; i <= Constants.DifficultyCap; i++) {
+        for (int i = 1; i <= Constants.DifficultyCap; i++) {
             Levels.Add(new Level(i));
         }
     }
@@ -44,8 +43,8 @@ public class GameManager : MonoBehaviour
         Initialize();
         var level = Levels[_currentLevelIndex];
 
-        Inventory.GenerateStock(level.Products);
-        GenerateCustomers(level.Customers);
+        InventoryManager.Instance.GenerateStock(level.Products);
+        Customers = level.Customers;
 
         StartCoroutine(CustomerStartLoop(level));
     }
@@ -60,7 +59,7 @@ public class GameManager : MonoBehaviour
             if (currentCustomerIndex < Customers.Count)
             {
                 Debug.Log($"Dispatching Customer {Customers[currentCustomerIndex].Name}");
-                Customers[currentCustomerIndex].TravelToNextShelf(Inventory);
+                Customers[currentCustomerIndex].TravelToNextShelf();
                 currentCustomerIndex++;
             }
         }

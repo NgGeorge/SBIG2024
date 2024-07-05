@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour 
 {
+    public static InventoryManager Instance { get; private set; }
+
     public Dictionary<Product, int> Stock { get; private set; }
 
     private void Awake()
@@ -14,7 +16,6 @@ public class InventoryManager : MonoBehaviour
             Instance = this;
             // Persist this object across scenes
             DontDestroyOnLoad(gameObject);
-            Initialize();
         }
         else
         {
@@ -22,12 +23,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void Initialize()
-    {
-        Stock = GenerateStock();
-    }
-
-    public void GenerateStock(List<Product> products, int maxProductCount = Constants.MaxProductCount)
+    public void GenerateStock(List<Product> products, int maxProductCount = Constants.MaxUniqueProducts)
     {
         var newStock = new Dictionary<Product, int>();
         var db = ProductDatabase.Instance;

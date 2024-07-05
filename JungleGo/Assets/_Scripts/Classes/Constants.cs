@@ -40,7 +40,7 @@ public static class Constants
     public const int DifficultyCap = 5;
 
     // === General Purpose ===
-    public const string[] CustomerNames = {
+    public static readonly string[] CustomerNames = {
         "Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Hannah", "Isaac", "Jane",
         "Kate", "Liam", "Mia", "Noah", "Olivia", "Paul", "Quinn", "Rose", "Samuel", "Tara",
         "Uma", "Victor", "Wendy", "Xavier", "Yvonne", "Zachary", "Abigail", "Benjamin", "Catherine"
@@ -72,5 +72,3 @@ public enum TileType
     /// </summary>
     Product
 }
-
-public enum Names

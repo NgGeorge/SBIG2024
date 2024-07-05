@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 public class Level
@@ -9,14 +10,16 @@ public class Level
     public int DelayBetweenCustomerSec;
     private List<string> uniqueNameList { get; set; }
     private List<int> uniqueProductIds { get;set; }
+    private Random random { get; set; }
    
     
     public Level (int difficulty = 1) {
         difficulty = Math.Max(difficulty, Constants.DifficultyCap);
-        Products = new List<int>();
+        Products = new List<Product>();
         uniqueNameList = Constants.CustomerNames.ToList();
         uniqueProductIds = new List<int>();
-        Customers = GenerateCustomerList(difficulty);
+        random = new Random();
+        Customers = GenerateCustomers(difficulty);
         Products = GenerateProductList();
 
         // Min limit incase we want to adjust the max delay or difficulty cap later
@@ -30,7 +33,7 @@ public class Level
     {
         // Refresh names list if we run out
         if (uniqueNameList.Count <= 0) {
-            uniqueNameList = Constants.CustomerNames;
+            uniqueNameList = Constants.CustomerNames.ToList();
         }
 
         int index = random.Next(0, uniqueNameList.Count);
@@ -48,7 +51,7 @@ public class Level
         var cList = new List<Customer>();
         // When setting this value, consider that the player has to swap between pages.
         // Setting the limit too high can make it literally impossible to play
-        int customerLimit = MinCustomers + (difficulty * Constants.CustomerCountDiffMod);
+        int customerLimit = Constants.MinCustomers + (difficulty * Constants.CustomerCountDiffMod);
         for (int i = 0; i < customerLimit; i++) {
             var name = PickCustomerName();
             Customer newCustomer = new Customer(i + 1, name);
@@ -65,8 +68,8 @@ public class Level
     {
         // Refresh products list if we run out
         if (uniqueProductIds.Count <= 0) {
-            uniqueProductIds = ProductDatabase.Instance.;
-            for (int i = 0; i < ProductDatabase.Instance.ProductCount) {
+            uniqueProductIds.Clear();
+            for (int i = 0; i < ProductDatabase.Instance.ProductCount; i++) {
                 uniqueProductIds.Add(i + 1);
             }
         }
@@ -85,7 +88,7 @@ public class Level
     private List<Product> GenerateProductList()
     {
         var pList = new List<Product>();
-        for (int i = 0; i < Constants.MaxProductCount; i++) {
+        for (int i = 0; i < Constants.MaxUniqueProducts; i++) {
             pList.Add(PickProduct());
         }
 
