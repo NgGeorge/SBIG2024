@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            // Keeps the GameManager persistent across scenes.
-            // This maybe needed in order to retain scoring info, etc.
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -32,26 +30,13 @@ public class GameManager : MonoBehaviour
     private void Initialize()
     {
         Customers = new List<Customer>();
-        // TODO : Implement Important Stuff
         Inventory = new InventoryManager();
 
-        Levels = new List<Level> 
-        {
-            new()
-            {
-                CustomerList = new string[] {
-                    "Frodo Baggins",
-                    "Bilbo Baggins",
-                    "Gandalf",
-                    "Samwise Gamgee",
-                    "Merry (Meriadoc Brandybuck)",
-                    "Pippin (Peregrin Took)"
-                    },
-                ProductIds = new List<int> { 1, 2, 3, 4, 5 },
-                MaxProductCount = 10,
-                DelayBetweenCustomerSec = 2,
-            }
-        };
+        // Let's do dynamic level generation
+        Levels = new List<Level>();
+        foreach (int i = 1; i <= Constants.DifficultyCap; i++) {
+            Levels.Add(new Level(i));
+        }
     }
 
     public void Start()
@@ -59,8 +44,8 @@ public class GameManager : MonoBehaviour
         Initialize();
         var level = Levels[_currentLevelIndex];
 
-        Inventory.RegenerateStock(level.ProductIds, level.MaxProductCount);
-        GenerateCustomers(level.CustomerList);
+        Inventory.GenerateStock(level.Products);
+        GenerateCustomers(level.Customers);
 
         StartCoroutine(CustomerStartLoop(level));
     }
@@ -70,7 +55,7 @@ public class GameManager : MonoBehaviour
         var currentCustomerIndex = 0;
         while (true && !IsAllCustomersHaveFinished())
         {
-            yield return new WaitForSeconds(level.DelayBetweenCustomerSec);
+            yield return new WaitForSeconds(random.Next(Constants.MinCustomerDelaySec, level.DelayBetweenCustomerSec));
 
             if (currentCustomerIndex < Customers.Count)
             {
@@ -93,15 +78,6 @@ public class GameManager : MonoBehaviour
         }
 
         return isComplete;
-    }
-
-    private void GenerateCustomers(string[] customersList)
-    {
-        for (int i = 0; i < customersList.Length ; i++)
-        {
-            Customer customer = new Customer((int)i + 1, customersList[i], Inventory);
-            Customers.Add(customer);
-        }
     }
 
     /// <summary>

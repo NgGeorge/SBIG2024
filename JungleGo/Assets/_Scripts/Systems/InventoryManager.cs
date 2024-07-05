@@ -5,39 +5,41 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour 
 {
-    private const int DEFAULT_MAX_PRODUCT_COUNT = 10;
     public Dictionary<Product, int> Stock { get; private set; }
-    public InventoryManager()
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            // Persist this object across scenes
+            DontDestroyOnLoad(gameObject);
+            Initialize();
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Initialize()
     {
         Stock = GenerateStock();
     }
 
-    private Dictionary<Product, int> GenerateStock(List<int> productIds = null, int maxProductCount = DEFAULT_MAX_PRODUCT_COUNT)
+    public void GenerateStock(List<Product> products, int maxProductCount = Constants.MaxProductCount)
     {
         var newStock = new Dictionary<Product, int>();
+        var db = ProductDatabase.Instance;
 
-        if (productIds != null)
+        foreach (var product in products)
         {
-            var db = ProductDatabase.Instance;
-
-            foreach (var id in productIds)
-            {
-                var product = db.GetProductById(id);
-                if (product != null)
-                {
-                    var count = (int)System.Math.Ceiling(Random.value * maxProductCount); // ensure there is at least 1 product
-                    newStock.Add(product, count);
-                    Debug.Log($"Inventory: Added {count} {product.ProductName}s to inventory");
-                }
-            }
+            var count = (int)System.Math.Ceiling(Random.value * maxProductCount); // ensure there is at least 1 product
+            newStock.Add(product, count);
+            Debug.Log($"Inventory: Added {count} {product.ProductName}s to inventory");
         }
 
-        return newStock;
-    }
-
-    public void RegenerateStock(List<int> productIds = default, int maxProductCount = DEFAULT_MAX_PRODUCT_COUNT)
-    {
-        Stock = GenerateStock(productIds, maxProductCount);
+        Stock = newStock;
     }
 
     public bool PurchaseProduct(Product product, int numPurchased = 1)
