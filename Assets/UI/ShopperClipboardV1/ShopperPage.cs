@@ -2,23 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class ShopperPage
 {
     public Shopper shopper;
-    //public Button button;
-    public VisualElement shopperPageRoot;
+    public Button button;
+    //public VisualElement shopperPageRoot;
     
     public ShopperPage(Shopper shopper, VisualTreeAsset template)
     {
         TemplateContainer itemButtonContainer = template.Instantiate();
         this.shopper = shopper;
 
-        //button = itemButtonContainer.Q<Button>();
-        //this.button.text = shopper.name;
-        this.shopperPageRoot = itemButtonContainer.Q("ShopperPageRoot");
+        button = itemButtonContainer.Q<Button>();
+        this.button.text = shopper.name;
+
+        //this.button = itemButtonContainer.Q();
         //List<Button> buttons = itemButtonContainer.Children().OfType<Button>().ToList();
     }
 

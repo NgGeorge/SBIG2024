@@ -19,7 +19,8 @@ public class ShopperClipboard : MonoBehaviour
         {
             //Approach 1: using another class ShopperPage
             ShopperPage newSlot = new ShopperPage(shopper, shopperButtonTemplate);
-            uiShopperClipboard.rootVisualElement.Q("ShopperRow").Add(newSlot.shopperPageRoot);
+            //uiShopperClipboard.rootVisualElement.Q("ShopperRow").Add(newSlot.shopperPageRoot);
+            uiShopperClipboard.rootVisualElement.Q("ShopperRow").Add(newSlot.button);
 
             //Approach 2: without using another class?
         }
@@ -28,6 +29,7 @@ public class ShopperClipboard : MonoBehaviour
     {
         shoppers.Add(new Shopper("Shopper 1"));
         shoppers.Add(new Shopper("Shopper 2"));
+        shoppers.Add(new Shopper("Shopper 3"));
     }
 
     // monobehavior method: Start is called before the first frame update
