@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     private int _currentLevelIndex = 0;
     private System.Random random = new System.Random();
+    private Clipboard clipboard;
 
     public delegate void CoroutineCallback();
 
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
         var level = Levels[_currentLevelIndex];
         level.Initialize();
         Customers = level.Customers;
+        clipboard = new Clipboard(Customers); 
 
         StartCoroutine(StartLevel(level, OnLevelComplete));
     }
