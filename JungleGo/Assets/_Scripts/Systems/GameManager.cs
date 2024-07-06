@@ -11,8 +11,10 @@ public class GameManager : MonoBehaviour
 
     internal List<Level> Levels { get; private set; }
 
-    private int currentLevelIndex = 0;
+    private int _currentLevelIndex = 0;
     private System.Random random = new System.Random();
+
+    public delegate void CoroutineCallback();
 
     private void Awake()
     {
@@ -26,7 +28,6 @@ public class GameManager : MonoBehaviour
             for (int i = 1; i <= Constants.DifficultyCap; i++) 
             {
                 Levels.Add(new Level(i));
-                Debug.Log($"Level Generation Initiated, Difficulty {i}");
             }
         }
         else
@@ -37,19 +38,16 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        // Given the limited time, let's reduce scope and randomly select a level
+        // Given the limited time, let's reduce scope and maybe randomly select a level
         // for a dynamic game experience. 
-        currentLevelIndex = random.Next(0, Levels.Count);
-        var level = Levels[currentLevelIndex];
-        Debug.Log($"Initializing level {currentLevelIndex}");
+        var level = Levels[_currentLevelIndex];
         level.Initialize();
         Customers = level.Customers;
 
-        StartCoroutine(CustomerStartLoop(level));
-        IsWinningScore();
+        StartCoroutine(StartLevel(level, OnLevelComplete));
     }
 
-    IEnumerator CustomerStartLoop(Level level)
+    IEnumerator StartLevel(Level level, CoroutineCallback callback)
     {
         var currentCustomerIndex = 0;
         while (true && !IsAllCustomersHaveFinished())
@@ -65,6 +63,10 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Finished start routine");
+
+        if (callback != null) {
+            callback();
+        }
     }
 
     private bool IsAllCustomersHaveFinished()
@@ -107,31 +109,37 @@ public class GameManager : MonoBehaviour
         });
     }
 
-    private bool IsWinningScore()
+    private void OnLevelComplete()
     {
         var hasWon = false;
         var CustomerSales = CalculateSales();
         var PlayerInput = CalculatePlayerInput();
 
-        var result = (PlayerInput / CustomerSales) * 100;
-        if (result >= (100 + Constants.WinThreshold)) 
+        if ((CustomerSales == 0.0M) && (PlayerInput != 0.0M)) {
+            Debug.Log("Loss for simple scenario.");
+        } 
+        else
         {
-            // TODO : Show player charged too much money
-            Debug.Log($"Result is {result}, lost because the player charged too much money.");
+            var result = (PlayerInput / CustomerSales) * 100;
+            Debug.Log($"Customer sales were ${CustomerSales.ToString("0.00")}");
+            Debug.Log($"PlayerInput was ${PlayerInput.ToString("0.00")}");
+            if (result >= (100 + Constants.WinThreshold)) 
+            {
+                // TODO : Show player charged too much money
+                Debug.Log($"Result is {result.ToString("0.00")}%, lost because the player charged too much money.");
+            }
+            else if (result <= (100 - Constants.WinThreshold)) 
+            {
+                // TODO : Show player lost the company too much money
+                Debug.Log($"Result is {result.ToString("0.00")}%, lost because the player lost too much money.");
+            } else if (result == 100) {
+                hasWon = true;
+                Debug.Log("Won with a Perfect Score");
+            } else {
+                hasWon = true;
+                Debug.Log($"Result is {result.ToString("0.00")}%, won within the margin of error +/- {Constants.WinThreshold}%.");
+            }
         }
-        else if (result <= (100 - Constants.WinThreshold)) 
-        {
-            // TODO : Show player lost the company too much money
-            Debug.Log($"Result is {result}, lost because the player lost too much money.");
-        } else if (result == 100) {
-            hasWon = true;
-            Debug.Log("Won with a Perfect Score");
-        } else {
-            hasWon = true;
-            Debug.Log($"Result is {result}, won within the margin of error +/- {Constants.WinThreshold}%.");
-        }
-
-        return hasWon;
     }
 
     private decimal CalculateSales()
