@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     internal List<Level> Levels { get; private set; }
 
-    private int _currentLevelIndex = 0;
+    private int currentLevelIndex = 0;
     private System.Random random = new System.Random();
 
     private void Awake()
@@ -38,9 +38,9 @@ public class GameManager : MonoBehaviour
     {
         // Given the limited time, let's reduce scope and randomly select a level
         // for a dynamic game experience. 
-        _currentLevelIndex = random.Next(0, Levels.Count);
-        var level = Levels[_currentLevelIndex];
-        Debug.Log("Initializing level");
+        currentLevelIndex = random.Next(0, Levels.Count);
+        var level = Levels[currentLevelIndex];
+        Debug.Log($"Initializing level {currentLevelIndex}");
         level.Initialize();
         Customers = level.Customers;
 
