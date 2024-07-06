@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
             Levels = new List<Level>();
             for (int i = 1; i <= Constants.DifficultyCap; i++) {
                 Levels.Add(new Level(i));
+                Debug.Log($"Level Generation Initiated, Difficulty {i}");
             }
         }
         else
@@ -35,9 +36,11 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        // Given the limited time, let's reduce scope and maybe randomly select a level
+        // Given the limited time, let's reduce scope and randomly select a level
         // for a dynamic game experience. 
+        _currentLevelIndex = random.Next(0, Levels.Count);
         var level = Levels[_currentLevelIndex];
+        Debug.Log("Initializing level");
         level.Initialize();
         Customers = level.Customers;
 
