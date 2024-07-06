@@ -35,8 +35,13 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < Constants.MaxUniqueProducts; i++) {
             var product = PickProduct();
             var count = (int)System.Math.Ceiling(UnityEngine.Random.value * maxProductCount); // ensure there is at least 1 product
-            newStock.TryAdd(product, count);
-            Debug.Log($"Inventory: Added {count} {product.ProductName}s to inventory");
+            var outOfUniqueProducts = newStock.TryAdd(product, count);
+            if (!outOfUniqueProducts) {
+                Debug.Log("Out of unique products, skipping additional inventory generation");
+                break;
+            } else {
+                Debug.Log($"Inventory: Added {count} {product.ProductName}s to inventory");
+            }
         }
 
         Stock = newStock;
@@ -61,6 +66,8 @@ public class InventoryManager : MonoBehaviour
 
     /// <summary>
     /// Select a random unique product from our database if possible, otherwise it'll refresh the list of products and reuse them
+    /// TODO : Currently, reusing the products isn't needed but we are keeping the refresh logic to avoid failures. 
+    /// We should probably reevaluate this at some point.
     /// </summary>
     private Product PickProduct()
     {
