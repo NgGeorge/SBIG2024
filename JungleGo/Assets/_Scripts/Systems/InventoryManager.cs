@@ -35,7 +35,7 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < Constants.MaxUniqueProducts; i++) {
             var product = PickProduct();
             var count = (int)System.Math.Ceiling(UnityEngine.Random.value * maxProductCount); // ensure there is at least 1 product
-            newStock.Add(product, count);
+            newStock.TryAdd(product, count);
             Debug.Log($"Inventory: Added {count} {product.ProductName}s to inventory");
         }
 

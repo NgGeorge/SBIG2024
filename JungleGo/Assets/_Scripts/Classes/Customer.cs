@@ -25,14 +25,10 @@ public class Customer
         Id = id;
         Name = name;
         Basket = new Basket();
-
-        // Generate ShoppingList per level
-        // TODO : Remove below line
-        // ShoppingList = GenerateShoppingList(); 
         Position = (0, 0);
     }
 
-    private List<Product> GenerateShoppingList()
+    public void GenerateShoppingList()
     {
         ShoppingList = new List<Product>();
         // TODO: Generate random number of items within a set boundary 
@@ -53,8 +49,6 @@ public class Customer
         }
 
         Debug.Log($"Customer {Name}: Created shopping list");
-
-        return ShoppingList;
     }
 
     public void TravelToNextShelf()

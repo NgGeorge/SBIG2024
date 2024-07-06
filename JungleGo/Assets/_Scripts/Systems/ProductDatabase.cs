@@ -38,6 +38,16 @@ public class ProductDatabase : MonoBehaviour
         products.Add(new Product { Id = 3, ProductName = "TV", Price = 500.0M });
         products.Add(new Product { Id = 4, ProductName = "Guitar", Price = 200.0M });
         products.Add(new Product { Id = 5, ProductName = "Pie", Price = 20.0M });
+        products.Add(new Product { Id = 6, ProductName = "Apple1", Price = 2.0M });
+        products.Add(new Product { Id = 7, ProductName = "Orange1", Price = 3.0M });
+        products.Add(new Product { Id = 8, ProductName = "TV1", Price = 500.0M });
+        products.Add(new Product { Id = 9, ProductName = "Guitar1", Price = 200.0M });
+        products.Add(new Product { Id = 10, ProductName = "Pie1", Price = 20.0M });
+        products.Add(new Product { Id = 11, ProductName = "Apple2", Price = 2.0M });
+        products.Add(new Product { Id = 12, ProductName = "Orange2", Price = 3.0M });
+        products.Add(new Product { Id = 13, ProductName = "TV2", Price = 500.0M });
+        products.Add(new Product { Id = 14, ProductName = "Guitar2", Price = 200.0M });
+        products.Add(new Product { Id = 15, ProductName = "Pie2", Price = 20.0M });
     }
 
     public Product GetProductById(int id)

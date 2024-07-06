@@ -33,17 +33,12 @@ public class GameManager : MonoBehaviour
         } 
     }
 
-    private void Initialize()
-    {
-        Customers = new List<Customer>();
-        // TODO: Level should call Inventory Manager to generate stock
-        // TODO: Level should populate shopping lists for all customers
-    }
-
     public void Start()
     {
-        Initialize();
+        // Given the limited time, let's reduce scope and maybe randomly select a level
+        // for a dynamic game experience. 
         var level = Levels[_currentLevelIndex];
+        level.Initialize();
         Customers = level.Customers;
 
         StartCoroutine(CustomerStartLoop(level));
