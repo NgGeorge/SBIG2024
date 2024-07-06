@@ -23,7 +23,8 @@ public class GameManager : MonoBehaviour
 
             // Let's do dynamic level generation
             Levels = new List<Level>();
-            for (int i = 1; i <= Constants.DifficultyCap; i++) {
+            for (int i = 1; i <= Constants.DifficultyCap; i++) 
+            {
                 Levels.Add(new Level(i));
             }
         }
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
         Customers = level.Customers;
 
         StartCoroutine(CustomerStartLoop(level));
+        IsWinningScore();
     }
 
     IEnumerator CustomerStartLoop(Level level)
@@ -100,5 +102,52 @@ public class GameManager : MonoBehaviour
                 // @Iain, feel free to invoke purchase here.
             }
         });
+    }
+
+    private bool IsWinningScore()
+    {
+        var hasWon = false;
+        var CustomerSales = CalculateSales();
+        var PlayerInput = CalculatePlayerInput();
+
+        var result = (PlayerInput / CustomerSales) * 100;
+        if (result >= (100 + Constants.WinThreshold)) 
+        {
+            // TODO : Show player charged too much money
+            Debug.Log($"Result is {result}, lost because the player charged too much money.");
+        }
+        else if (result <= (100 - Constants.WinThreshold)) 
+        {
+            // TODO : Show player lost the company too much money
+            Debug.Log($"Result is {result}, lost because the player lost too much money.");
+        } else if (result == 100) {
+            hasWon = true;
+            Debug.Log("Won with a Perfect Score");
+        } else {
+            hasWon = true;
+            Debug.Log($"Result is {result}, won within the margin of error +/- {Constants.WinThreshold}%.");
+        }
+
+        return hasWon;
+    }
+
+    private decimal CalculateSales()
+    {
+        decimal total = 0.0M;
+        foreach (var customer in Customers) 
+        {
+           total += customer.Basket.Total; 
+        }
+
+        return total;
+    }
+
+    private decimal CalculatePlayerInput()
+    {
+        decimal total = 0.0M;
+        // Mock Player input for now
+        total = 100.0M;
+
+        return total;
     }
 }
