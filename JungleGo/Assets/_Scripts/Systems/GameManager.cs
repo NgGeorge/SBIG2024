@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     private int _currentLevelIndex = 0;
     private System.Random random = new System.Random();
 
+    public delegate void CoroutineCallback();
+
     private void Awake()
     {
         if (Instance == null)
@@ -23,7 +25,8 @@ public class GameManager : MonoBehaviour
 
             // Let's do dynamic level generation
             Levels = new List<Level>();
-            for (int i = 1; i <= Constants.DifficultyCap; i++) {
+            for (int i = 1; i <= Constants.DifficultyCap; i++) 
+            {
                 Levels.Add(new Level(i));
             }
         }
@@ -41,10 +44,10 @@ public class GameManager : MonoBehaviour
         level.Initialize();
         Customers = level.Customers;
 
-        StartCoroutine(CustomerStartLoop(level));
+        StartCoroutine(StartLevel(level, OnLevelComplete));
     }
 
-    IEnumerator CustomerStartLoop(Level level)
+    IEnumerator StartLevel(Level level, CoroutineCallback callback)
     {
         var currentCustomerIndex = 0;
         while (true && !IsAllCustomersHaveFinished())
@@ -60,6 +63,10 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log("Finished start routine");
+
+        if (callback != null) {
+            callback();
+        }
     }
 
     private bool IsAllCustomersHaveFinished()
@@ -100,5 +107,58 @@ public class GameManager : MonoBehaviour
                 // @Iain, feel free to invoke purchase here.
             }
         });
+    }
+
+    private void OnLevelComplete()
+    {
+        var hasWon = false;
+        var CustomerSales = CalculateSales();
+        var PlayerInput = CalculatePlayerInput();
+
+        if ((CustomerSales == 0.0M) && (PlayerInput != 0.0M)) {
+            Debug.Log("Loss for simple scenario.");
+        } 
+        else
+        {
+            var result = (PlayerInput / CustomerSales) * 100;
+            Debug.Log($"Customer sales were ${CustomerSales.ToString("0.00")}");
+            Debug.Log($"PlayerInput was ${PlayerInput.ToString("0.00")}");
+            if (result >= (100 + Constants.WinThreshold)) 
+            {
+                // TODO : Show player charged too much money
+                Debug.Log($"Result is {result.ToString("0.00")}%, lost because the player charged too much money.");
+            }
+            else if (result <= (100 - Constants.WinThreshold)) 
+            {
+                // TODO : Show player lost the company too much money
+                Debug.Log($"Result is {result.ToString("0.00")}%, lost because the player lost too much money.");
+            } else if (result == 100) {
+                hasWon = true;
+                Debug.Log("Won with a Perfect Score");
+            } else {
+                hasWon = true;
+                Debug.Log($"Result is {result.ToString("0.00")}%, won within the margin of error +/- {Constants.WinThreshold}%.");
+            }
+        }
+    }
+
+    private decimal CalculateSales()
+    {
+        decimal total = 0.0M;
+        foreach (var customer in Customers) 
+        {
+           total += customer.Basket.Total; 
+        }
+
+        return total;
+    }
+
+    private decimal CalculatePlayerInput()
+    {
+        decimal total = 0.0M;
+        // Mock Player input for now
+        total = 100.0M;
+
+        return total;
     }
 }
