@@ -40,7 +40,7 @@ public class Customer
 
         for (int i = 0; i < numProducts; i++)
         {
-            var product = InventoryManager.Instance.GetRandomProduct();
+            var product = InventoryManager.Instance.GetRandomProductFromInventory();
             if (!ShoppingList.Any(p => p.Id == product.Id))
             {
                 ShoppingList.Add(product);

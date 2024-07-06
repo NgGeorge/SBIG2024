@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         Initialize();
         var level = Levels[_currentLevelIndex];
 
-        InventoryManager.Instance.GenerateStock(level.Products);
+        InventoryManager.Instance.GenerateStock();
         Customers = level.Customers;
 
         StartCoroutine(CustomerStartLoop(level));

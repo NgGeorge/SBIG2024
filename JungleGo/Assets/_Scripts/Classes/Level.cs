@@ -6,21 +6,16 @@ using System.Text;
 public class Level
 {
     public List<Customer> Customers { get; set; }
-    public List<Product> Products { get; set; }
     public int DelayBetweenCustomerSec;
     private List<string> uniqueNameList { get; set; }
-    private List<int> uniqueProductIds { get;set; }
     private Random random { get; set; }
    
     
     public Level (int difficulty = 1) {
         difficulty = Math.Max(difficulty, Constants.DifficultyCap);
-        Products = new List<Product>();
         uniqueNameList = Constants.CustomerNames.ToList();
-        uniqueProductIds = new List<int>();
         random = new Random();
         Customers = GenerateCustomers(difficulty);
-        Products = GenerateProductList();
 
         // Min limit incase we want to adjust the max delay or difficulty cap later
         DelayBetweenCustomerSec = Math.Min(Constants.MinCustomerDelaySec, Constants.MaxCustomerDelaySec - difficulty);
@@ -60,40 +55,5 @@ public class Level
 
         return cList;
     }
-
-    /// <summary>
-    /// Select a random unique product from our database if possible, otherwise it'll refresh the list of products and reuse them
-    /// </summary>
-    private Product PickProduct()
-    {
-        // Refresh products list if we run out
-        if (uniqueProductIds.Count <= 0) {
-            uniqueProductIds.Clear();
-            for (int i = 0; i < ProductDatabase.Instance.ProductCount; i++) {
-                uniqueProductIds.Add(i + 1);
-            }
-        }
-
-        int index = random.Next(0, uniqueProductIds.Count);
-        var id = uniqueProductIds[index];
-        uniqueProductIds.RemoveAt(index);
-
-        return ProductDatabase.Instance.GetProductById(id);
-
-    }
-
-    /// <summary>
-    /// For generating a list of products
-    /// </summary>
-    private List<Product> GenerateProductList()
-    {
-        var pList = new List<Product>();
-        for (int i = 0; i < Constants.MaxUniqueProducts; i++) {
-            pList.Add(PickProduct());
-        }
-
-        return pList;
-    } 
-
 }
 
