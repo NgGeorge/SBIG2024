@@ -35,8 +35,8 @@ public class Clipboard : MonoBehaviour
     private void Initialize()
     {
         ClipboardRoot = uiClipboard.rootVisualElement.Q("Clipboard");
-        ClipboardTop = clipboard.rootVisualElement.Q("ClipboardTop");
-        ClipboardBody = clipboard.rootVisualElement.Q("ClipboardBody");
+        ClipboardTop = uiClipboard.rootVisualElement.Q("ClipboardTop");
+        ClipboardBody = uiClipboard.rootVisualElement.Q("ClipboardBody");
         currentCustomerIndex = 0;
         currentCustomer = customers[currentCustomerIndex];
 
@@ -47,20 +47,20 @@ public class Clipboard : MonoBehaviour
 
     private void RegisterEvents()
     {
-        var paginationBack = ClipboardTop.Q("PageBack").Descendents();
-        var paginationNext = ClipboardTop.Q("PageNext").Descendents();
+        var paginationBack = ClipboardTop.Q("PageBack");
+        var paginationNext = ClipboardTop.Q("PageNext");
 
-        paginationBack.RegisterCallback<ClickEvent>(OnClickChoosePreviousCustomer);
-        paginationNext.RegisterCallback<ClickEvent>(OnClickChooseNextCustomer);
+        paginationBack.RegisterCallback<ClickEvent>(evt => OnClickChoosePreviousCustomer());
+        paginationNext.RegisterCallback<ClickEvent>(evt => OnClickChooseNextCustomer());
 
-        var productRows = ClipboardBody.Q<VisualElement>().ToList();
+        var productRows = ClipboardBody.Query<VisualElement>().ToList();
         foreach (var row in productRows) {
-            var productSquares = row.Q<VisualElement>().ToList();
+            var productSquares = row.Query<VisualElement>().ToList();
             foreach (var productSquare in productSquares) {
                 var productInput = productSquare.Q("ProductInput");
-                var decrease = productInput.Q("Decrease");
-                var increase = productInput.Q("Increase");
-                var prodCount = productInput.Q("ProductCount");
+                var decrease = productInput.Q("Decrease") as Button;
+                var increase = productInput.Q("Increase") as Button;
+                var prodCount = productInput.Q("ProductCount") as Label;
 
                 increase.RegisterCallback<ClickEvent>(evt => OnClickIncreaseProdCount(prodCount));
                 decrease.RegisterCallback<ClickEvent>(evt => OnClickDecreaseProdCount(prodCount));
@@ -70,15 +70,19 @@ public class Clipboard : MonoBehaviour
 
     private void OnClickIncreaseProdCount(Label prodCount)
     {
-        prodCount.value++;
+        var count = int.Parse(prodCount.text);
+        count++;
+        prodCount.text = count.ToString();
         SaveClipboard();
     }
 
     private void OnClickDecreaseProdCount(Label prodCount)
     {
-        if (prodCount.value > 0)
+        var count = int.Parse(prodCount.text);
+        if (count > 0)
         {
-            prodCount.value--;
+            count--;
+            prodCount.text = count.ToString();
         }
         SaveClipboard();
     }
@@ -118,25 +122,25 @@ public class Clipboard : MonoBehaviour
     /// </summary>
     public void UpdateClipboard()
     {
-        var CustomerName = ClipboardTop.Q("CustomerName").Descendents();
-        var CustomerId = ClipboardTop.Q("CustomerId").Descendents();
-        CustomerName.value = currentCustomer.Name;
-        CustomerId.value = currentCustomer.Id;
+        var CustomerName = ClipboardTop.Q("CustomerName") as Label;
+        var CustomerId = ClipboardTop.Q("CustomerId") as Label;
+        CustomerName.text = currentCustomer.Name;
+        CustomerId.text = currentCustomer.Id.ToString();
 
-        var CustomerIcon = ClipboardTop.Q("CustomerPicture").Descendents();
+        var CustomerIcon = ClipboardTop.Q("CustomerPicture");
         //CustomerIcon.style.backgroundImage = currentCustomer.Image;
 
         // Sneaking suspicion that if I just queried descendent product squares, it'll get it in the right order.
         int i = 0;
-        var productRows = ClipboardBody.Q<VisualElement>().ToList();
+        var productRows = ClipboardBody.Query<VisualElement>().ToList();
         foreach (var row in productRows) {
-            var productSquares = row.Q<VisualElement>().ToList();
+            var productSquares = row.Query<VisualElement>().ToList();
             foreach (var productSquare in productSquares) {
                 var productIcon = productSquare.Q("ProductIcon");
                 var productInput = productSquare.Q("ProductInput");
-                var prodCount = productInput.Q("ProductCount");
-                var currentProduct = playerInputData[currentCustomer].Keys[i];
-                prodCount.value = playerInputData[currentCustomer][currentProduct];
+                var prodCount = productInput.Q("ProductCount") as Label;
+                var currentProduct = playerInputData[currentCustomer].Keys.ToList()[i];
+                prodCount.text = playerInputData[currentCustomer][currentProduct].ToString();
                 //productIcon.style.backgroundImage = currentProduct.image;
                 i++;
             }
@@ -148,11 +152,11 @@ public class Clipboard : MonoBehaviour
     public void SaveClipboard()
     {
         int i = 0;
-        var intFields = ClipboardBody.Q<Label>().Descendents().ToList();
-        foreach (var product in playerInputData[currentCustomer].Keys())
+        var intFields = ClipboardBody.Query<Label>().ToList();
+        foreach (var product in playerInputData[currentCustomer].Keys)
         {
             // Yeah this is working off a ton of assumptions that are probably not all going to be true 
-            playerInputData[currentCustomer][product] = intFields[i].value;
+            playerInputData[currentCustomer][product] = int.Parse(intFields[i].text);
             i++;
         }
     }
