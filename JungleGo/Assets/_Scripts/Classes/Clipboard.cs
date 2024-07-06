@@ -68,13 +68,13 @@ public class Clipboard : MonoBehaviour
         }
     }
 
-    private void OnClickIncreaseProdCount(IntegerField prodCount)
+    private void OnClickIncreaseProdCount(Label prodCount)
     {
         prodCount.value++;
         SaveClipboard();
     }
 
-    private void OnClickDecreaseProdCount(IntegerField prodCount)
+    private void OnClickDecreaseProdCount(Label prodCount)
     {
         if (prodCount.value > 0)
         {
@@ -148,7 +148,7 @@ public class Clipboard : MonoBehaviour
     public void SaveClipboard()
     {
         int i = 0;
-        var intFields = ClipboardBody.Q<IntegerField>().Descendents().ToList();
+        var intFields = ClipboardBody.Q<Label>().Descendents().ToList();
         foreach (var product in playerInputData[currentCustomer].Keys())
         {
             // Yeah this is working off a ton of assumptions that are probably not all going to be true 
