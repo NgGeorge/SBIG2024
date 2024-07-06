@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,20 +9,23 @@ public class GameManager : MonoBehaviour
 
     public List<Customer> Customers { get; private set; }
 
-    public InventoryManager Inventory{ get; private set; }
-
     internal List<Level> Levels { get; private set; }
 
     private int _currentLevelIndex = 0;
+    private System.Random random = new System.Random();
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            // Keeps the GameManager persistent across scenes.
-            // This maybe needed in order to retain scoring info, etc.
             DontDestroyOnLoad(gameObject);
+
+            // Let's do dynamic level generation
+            Levels = new List<Level>();
+            for (int i = 1; i <= Constants.DifficultyCap; i++) {
+                Levels.Add(new Level(i));
+            }
         }
         else
         {
@@ -29,38 +33,13 @@ public class GameManager : MonoBehaviour
         } 
     }
 
-    private void Initialize()
-    {
-        Customers = new List<Customer>();
-        // TODO : Implement Important Stuff
-        Inventory = new InventoryManager();
-
-        Levels = new List<Level> 
-        {
-            new()
-            {
-                CustomerList = new string[] {
-                    "Frodo Baggins",
-                    "Bilbo Baggins",
-                    "Gandalf",
-                    "Samwise Gamgee",
-                    "Merry (Meriadoc Brandybuck)",
-                    "Pippin (Peregrin Took)"
-                    },
-                ProductIds = new List<int> { 1, 2, 3, 4, 5 },
-                MaxProductCount = 10,
-                DelayBetweenCustomerSec = 2,
-            }
-        };
-    }
-
     public void Start()
     {
-        Initialize();
+        // Given the limited time, let's reduce scope and maybe randomly select a level
+        // for a dynamic game experience. 
         var level = Levels[_currentLevelIndex];
-
-        Inventory.RegenerateStock(level.ProductIds, level.MaxProductCount);
-        GenerateCustomers(level.CustomerList);
+        level.Initialize();
+        Customers = level.Customers;
 
         StartCoroutine(CustomerStartLoop(level));
     }
@@ -70,12 +49,12 @@ public class GameManager : MonoBehaviour
         var currentCustomerIndex = 0;
         while (true && !IsAllCustomersHaveFinished())
         {
-            yield return new WaitForSeconds(level.DelayBetweenCustomerSec);
+            yield return new WaitForSeconds(random.Next(Constants.MinCustomerDelaySec, level.DelayBetweenCustomerSec));
 
             if (currentCustomerIndex < Customers.Count)
             {
                 Debug.Log($"Dispatching Customer {Customers[currentCustomerIndex].Name}");
-                Customers[currentCustomerIndex].TravelToNextShelf(Inventory);
+                Customers[currentCustomerIndex].TravelToNextShelf();
                 currentCustomerIndex++;
             }
         }
@@ -93,15 +72,6 @@ public class GameManager : MonoBehaviour
         }
 
         return isComplete;
-    }
-
-    private void GenerateCustomers(string[] customersList)
-    {
-        for (int i = 0; i < customersList.Length ; i++)
-        {
-            Customer customer = new Customer((int)i + 1, customersList[i], Inventory);
-            Customers.Add(customer);
-        }
     }
 
     /// <summary>

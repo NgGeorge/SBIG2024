@@ -20,29 +20,26 @@ public class Customer
     
     public (int, int) Position { get; private set; } 
 
-    // TODO: Figure out collision and behavioral properties
-
-    public Customer(int id, string name, InventoryManager inventoryManager)
+    public Customer(int id, string name)
     {
         Id = id;
         Name = name;
         Basket = new Basket();
-        ShoppingList = GenerateShoppingList(inventoryManager); 
         Position = (0, 0);
     }
 
-    private List<Product> GenerateShoppingList(InventoryManager inventoryManager)
+    public void GenerateShoppingList()
     {
         ShoppingList = new List<Product>();
         // TODO: Generate random number of items within a set boundary 
         // Consider whether that should be static or if we want it the
         // boundary to vary based on something like difficulty, etc.
-        var maxProducts = inventoryManager.Stock.Count;
+        var maxProducts = InventoryManager.Instance.Stock.Count;
         var numProducts = Random.Range(1, maxProducts + 1);
 
         for (int i = 0; i < numProducts; i++)
         {
-            var product = inventoryManager.GetRandomProduct();
+            var product = InventoryManager.Instance.GetRandomProductFromInventory();
             if (!ShoppingList.Any(p => p.Id == product.Id))
             {
                 ShoppingList.Add(product);
@@ -52,11 +49,9 @@ public class Customer
         }
 
         Debug.Log($"Customer {Name}: Created shopping list");
-
-        return ShoppingList;
     }
 
-    public void TravelToNextShelf(InventoryManager inventoryManager)
+    public void TravelToNextShelf()
     {
         if (_currentProductIndex >= ShoppingList.Count)
         {
@@ -68,10 +63,10 @@ public class Customer
         Debug.Log($"Customer {Name}: Travelling to next shelf");
 
         // Temporary: hard code visiting shelf to debug simulation
-        OnShelfVisited(inventoryManager);
+        OnShelfVisited();
     }
 
-    public void OnShelfVisited(InventoryManager inventoryManager)
+    public void OnShelfVisited()
     {
         if (_currentProductIndex >= ShoppingList.Count) 
         {
@@ -83,17 +78,17 @@ public class Customer
 
         if (ShouldPurchase())
         {
-            PurchaseNextProduct(inventoryManager);
-            TravelToNextShelf(inventoryManager);
+            PurchaseNextProduct();
+            TravelToNextShelf();
         }
         else
         {
             Debug.Log($"Customer {Name}: Decided not to puchase the item");
-            TravelToNextShelf(inventoryManager);
+            TravelToNextShelf();
         }
     }
 
-    private void PurchaseNextProduct(InventoryManager inventoryManager)
+    private void PurchaseNextProduct()
     {
         if (_currentProductIndex < ShoppingList.Count)
         {
@@ -102,7 +97,7 @@ public class Customer
             Debug.Log($"Customer {Name}: attempting to purchase product {product.ProductName}");
 
             // if there is enough product left to purchase
-            if (inventoryManager.PurchaseProduct(product))
+            if (InventoryManager.Instance.PurchaseProduct(product))
             {
                 Debug.Log($"Customer {Name}: purchased product {product.ProductName}");
                 Basket.AddProduct(product);

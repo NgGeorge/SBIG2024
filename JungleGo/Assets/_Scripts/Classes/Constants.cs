@@ -3,6 +3,7 @@
 /// </summary>
 public static class Constants
 {
+    // === Board Settings ===
     /// <summary>
     /// Defines the number of rows in the game board.
     /// </summary>
@@ -22,6 +23,28 @@ public static class Constants
     /// Represents the tile code used for obstacle tiles when initializing the board.
     /// </summary>
     public const int ObstacleTileCode = 0; // Obstacle code for initializing the board
+
+    // === Level Settings ===
+    public const int MaxUniqueProducts = 12;
+    public const int MaxCustomerDelaySec = 10; 
+    public const int MinCustomerDelaySec = 1;
+    public const int MinCustomers = 7;
+    /// <summary>
+    /// Number of customers added per difficulty level
+    /// </summary>
+    public const int CustomerCountDiffMod = 3;
+    /// <summary>
+    /// Maximum difficulty level, semi-arbitrary but used for customer
+    /// list size and modifying delay between customers.
+    /// </summary>
+    public const int DifficultyCap = 5;
+
+    // === General Purpose ===
+    public static readonly string[] CustomerNames = {
+        "Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Hannah", "Isaac", "Jane",
+        "Kate", "Liam", "Mia", "Noah", "Olivia", "Paul", "Quinn", "Rose", "Samuel", "Tara",
+        "Uma", "Victor", "Wendy", "Xavier", "Yvonne", "Zachary", "Abigail", "Benjamin", "Catherine"
+    };
 }
 
 /// <summary>
