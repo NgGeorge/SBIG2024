@@ -20,6 +20,12 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            // Let's do dynamic level generation
+            Levels = new List<Level>();
+            for (int i = 1; i <= Constants.DifficultyCap; i++) {
+                Levels.Add(new Level(i));
+            }
         }
         else
         {
@@ -30,20 +36,14 @@ public class GameManager : MonoBehaviour
     private void Initialize()
     {
         Customers = new List<Customer>();
-
-        // Let's do dynamic level generation
-        Levels = new List<Level>();
-        for (int i = 1; i <= Constants.DifficultyCap; i++) {
-            Levels.Add(new Level(i));
-        }
+        // TODO: Level should call Inventory Manager to generate stock
+        // TODO: Level should populate shopping lists for all customers
     }
 
     public void Start()
     {
         Initialize();
         var level = Levels[_currentLevelIndex];
-
-        InventoryManager.Instance.GenerateStock();
         Customers = level.Customers;
 
         StartCoroutine(CustomerStartLoop(level));

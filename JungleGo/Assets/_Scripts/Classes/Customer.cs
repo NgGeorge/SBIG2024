@@ -25,7 +25,10 @@ public class Customer
         Id = id;
         Name = name;
         Basket = new Basket();
-        ShoppingList = GenerateShoppingList(); 
+
+        // Generate ShoppingList per level
+        // TODO : Remove below line
+        // ShoppingList = GenerateShoppingList(); 
         Position = (0, 0);
     }
 
