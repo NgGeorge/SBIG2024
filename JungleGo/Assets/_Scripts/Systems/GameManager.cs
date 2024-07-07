@@ -91,6 +91,8 @@ public class GameManager : MonoBehaviour
 
                 // TODO : This is where the customers should spawn
                 GameObject customerPrefab = Instantiate(_prefabArray[random.Next(0, _prefabArray.Length)], _startPotision, Quaternion.identity);
+                var DoorNoise = GameObject.Find("Door").GetComponent<AudioSource>();
+                DoorNoise.Play();
                 
                 Component[] components = customerPrefab.GetComponents<Component>();
                 

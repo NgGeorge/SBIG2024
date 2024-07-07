@@ -9,6 +9,8 @@ public class CustomerHandler : MonoBehaviour
 
     private Animator _animator;
 
+    private AudioSource audioSource;
+
     public Customer CustomerData;
 
     [SerializeField]
@@ -27,6 +29,9 @@ public class CustomerHandler : MonoBehaviour
 
         //  Animation
         _animator = GetComponent<Animator>();
+
+        // GameObject
+        audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -48,8 +53,6 @@ public class CustomerHandler : MonoBehaviour
             else
             {
                 // Stop
-                GameObject existingGO = this.gameObject;
-                AudioSource audioSource = existingGO.AddComponent<AudioSource>();
                 audioSource.clip = product.Audio;
                 audioSource.Play();
 
@@ -70,6 +73,9 @@ public class CustomerHandler : MonoBehaviour
             }
             else 
             {
+                var doorAudio = Resources.Load<AudioClip>("Sounds/Door");
+                audioSource.clip = doorAudio;
+                audioSource.Play();
                 Destroy(gameObject);
             }
             // Call destory customer logic in here.
