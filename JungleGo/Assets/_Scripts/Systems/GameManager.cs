@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour
                 {
                     clipboard.AddCustomer(Customers[currentCustomerIndex]);
                 }
+                // TODO : This is where the customers should spawn
                 Customers[currentCustomerIndex].TravelToNextShelf();
                 currentCustomerIndex++;
             }
