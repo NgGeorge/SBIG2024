@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f69db4b5a266434a8e1d9cc969e5c1f, type: 3}
   m_Name: Hotdog
   m_EditorClassIdentifier: 
-  Id: 0
-  ProductName: 
-  Icon: {fileID: 0}
+  Id: 9
+  ProductName: Hotdog
+  Icon: {fileID: 21300000, guid: 8c3b976b037b82646a639805aaaa4c50, type: 3}
+  intPrice: 2

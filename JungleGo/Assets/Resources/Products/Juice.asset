@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f69db4b5a266434a8e1d9cc969e5c1f, type: 3}
   m_Name: Juice
   m_EditorClassIdentifier: 
-  Id: 0
-  ProductName: 
-  Icon: {fileID: 0}
-  intPrice: 0
+  Id: 11
+  ProductName: Juice
+  Icon: {fileID: 21300000, guid: 4364a948f09ed8b41b48240a0758d09f, type: 3}
+  intPrice: 2

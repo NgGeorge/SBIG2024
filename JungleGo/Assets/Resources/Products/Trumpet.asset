@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f69db4b5a266434a8e1d9cc969e5c1f, type: 3}
   m_Name: Trumpet
   m_EditorClassIdentifier: 
-  Id: 0
-  ProductName: 
-  Icon: {fileID: 0}
+  Id: 14
+  ProductName: Trumpet
+  Icon: {fileID: 21300000, guid: 71827937b74158e49a1ff2aee3a64a05, type: 3}
+  intPrice: 30

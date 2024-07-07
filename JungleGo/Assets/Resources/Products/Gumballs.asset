@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f69db4b5a266434a8e1d9cc969e5c1f, type: 3}
   m_Name: Gumballs
   m_EditorClassIdentifier: 
-  Id: 0
-  ProductName: 
-  Icon: {fileID: 0}
+  Id: 8
+  ProductName: Gumballs
+  Icon: {fileID: 21300000, guid: c8e39ff8ab7a0294994e86ec2ad924f3, type: 3}
+  intPrice: 1

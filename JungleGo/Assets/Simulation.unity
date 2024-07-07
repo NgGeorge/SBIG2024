@@ -3007,7 +3007,7 @@ GameObject:
   - component: {fileID: 1603878315}
   - component: {fileID: 1603878314}
   m_Layer: 5
-  m_Name: Basket
+  m_Name: BasketUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3025,7 +3025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034b25f025ebed94195c4b058e8db526, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiClipboard: {fileID: 1603878315}
+  uiBasket: {fileID: 1603878315}
 --- !u!114 &1603878315
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f69db4b5a266434a8e1d9cc969e5c1f, type: 3}
   m_Name: Goat
   m_EditorClassIdentifier: 
-  Id: 0
-  ProductName: 
-  Icon: {fileID: 0}
+  Id: 7
+  ProductName: Goat
+  Icon: {fileID: 21300000, guid: df0add984c9c0084c85c4657a83a2155, type: 3}
+  intPrice: 200

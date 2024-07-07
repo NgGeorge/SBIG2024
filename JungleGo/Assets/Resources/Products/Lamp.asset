@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f69db4b5a266434a8e1d9cc969e5c1f, type: 3}
   m_Name: Lamp
   m_EditorClassIdentifier: 
-  Id: 0
-  ProductName: 
-  Icon: {fileID: 0}
-  intPrice: 0
+  Id: 12
+  ProductName: Lamp
+  Icon: {fileID: 21300000, guid: bfda90f257a7ec647a3a7b5be58a34d0, type: 3}
+  intPrice: 20

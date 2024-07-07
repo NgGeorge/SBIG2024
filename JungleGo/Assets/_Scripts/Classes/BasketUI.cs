@@ -36,10 +36,39 @@ public class BasketUI : MonoBehaviour
         CloseBasket();
     }
 
+    void FixedUpdate()
+    {
+        if (isEnabled) {
+            var basketRows = insideBasket.Children().ToList();
+            if ((Time.frameCount % 50 == 0)) {
+                var randomizedProdList = new List<Product>(currentBasket.Products);
+                randomizedProdList = randomizedProdList.OrderBy(x => Guid.NewGuid()).ToList();
+
+                foreach (var row in basketRows)
+                {
+                    row.Clear();
+                }
+
+                int i = 0;
+                foreach (var product in randomizedProdList)
+                {
+                    var prod = new VisualElement();
+                    prod.style.width = new Length(75, LengthUnit.Pixel);
+                    prod.style.height = new Length(75, LengthUnit.Pixel);
+                    prod.style.backgroundImage = Background.FromSprite(product.Icon);
+                    var index = Math.Min(i / 3, basketRows.Count);
+                    basketRows[index].Add(prod);
+                    i++;
+                }
+            }
+        }
+    }
+
     public void OpenBasket(Basket basket)
     {
         Debug.Log("Opening Basket");
         isEnabled = true;
+        currentBasket = basket;
         insideBasket.visible = true;
         basketContainer.style.backgroundImage = openBasket; 
         var basketRows = insideBasket.Children().ToList();

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f69db4b5a266434a8e1d9cc969e5c1f, type: 3}
   m_Name: Garlic
   m_EditorClassIdentifier: 
-  Id: 0
-  ProductName: 
-  Icon: {fileID: 0}
+  Id: 5
+  ProductName: Garlic
+  Icon: {fileID: 21300000, guid: b1be0951341866b4fb03e65efbe9f89f, type: 3}
+  intPrice: 3
