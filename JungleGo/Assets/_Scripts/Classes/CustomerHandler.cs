@@ -15,6 +15,10 @@ public class CustomerHandler : MonoBehaviour
 
     [SerializeField]
     float minDistance;
+    
+    [SerializeField]
+    public GameObject speechBubblePrefab;
+
 
 
     // Start is called before the first frame update
@@ -55,7 +59,8 @@ public class CustomerHandler : MonoBehaviour
                 // Stop
                 audioSource.clip = product.Audio;
                 audioSource.Play();
-
+                var currentSpeechBubble = Instantiate(speechBubblePrefab, transform);
+                currentSpeechBubble.transform.localPosition = transform.position;
                 _animator.SetBool("IsWalking", false);
                 CustomerData.TravelToNextShelf();
             }

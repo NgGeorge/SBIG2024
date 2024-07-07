@@ -26,8 +26,8 @@ public static class Constants
 
     // === Level Settings ===
     public const int MaxUniqueProducts = 9;
-    public const int MaxCustomerDelaySec = 12; 
-    public const int MinCustomerDelaySec = 5;
+    public const int MaxCustomerDelaySec = 10; 
+    public const int MinCustomerDelaySec = 1;
     public const int MinCustomers = 1;
     /// <summary>
     /// Number of customers added per difficulty level
