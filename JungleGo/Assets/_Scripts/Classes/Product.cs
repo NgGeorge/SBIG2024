@@ -9,7 +9,8 @@ public class Product : ScriptableObject
     public string ProductName;
     public Sprite Icon;
     public int intPrice;
-    public (int, int) Position; // TODO: We need to make sure each product has a aisle position during initialization.
+    public (int, int) Position;
+    [SerializeField] public GameObject Target;
 
     public decimal getPrice()
     {
