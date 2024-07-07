@@ -6,24 +6,68 @@ using UnityEngine.UIElements;
 
 public class MainMenuController : MonoBehaviour
 {
-    public VisualElement ui;
-    // References to main menu UI elements:
-    public Button playButton;
+    public VisualElement uiMainMenu;
+
+    private Button playButton;
+    private Button howToPlayButton;
+    private Label howToPlayLabel;
+
+    //maybe: use Resources.Load to show a popup.uxml
+    //private UIDocument howToPlayDocument;//fill this in with the HowToPlay popup in Inspector?
+    //private VisualElement uiHowToPlayPopup;
 
     private void Awake()
-    {
-        ui = GetComponent<UIDocument>().rootVisualElement;
+    {     
+        uiMainMenu = GetComponent<UIDocument>().rootVisualElement;
     }
 
     private void OnEnable()
     {
-        playButton = ui.Q<Button>("PlayButton");
+        //get references to the UI elements we are going to manipulate:
+        playButton = uiMainMenu.Q<Button>("playButton");
+        howToPlayButton = uiMainMenu.Q<Button>("howToPlayButton");
+        howToPlayLabel = uiMainMenu.Q<Label>("howToPlayLabel");
+
+        //assign logic to ui elements:
         playButton.RegisterCallback<ClickEvent>(OnPlayButtonClicked);
+        howToPlayButton.RegisterCallback<ClickEvent>(OnHowToPlayButtonClicked);
     }
 
     private void OnPlayButtonClicked(ClickEvent evt)
     {
-        Debug.Log("OnPlayButtonClicked");
         gameObject.SetActive(false);
+    }
+
+    private void OnHowToPlayButtonClicked(ClickEvent evt)
+    {
+        //todo
+        howToPlayLabel.text = "this is how you play the game";
+    }
+
+    private void ShowHowToPlayPopup(ClickEvent evt)
+    {
+        
+        //    howToPlayDocument = Resources.Load<UIDocument>("HowToPlayInstructions"); // Load popup document
+        //    if (howToPlayDocument != null)
+        //    {
+        //        Debug.Log("HowToPlayInstructions.uxml loaded successfully!");
+        //    }
+        //    else
+        //    {
+        //        Debug.LogError("Failed to load HowToPlayInstructions.uxml!");
+        //    }
+        //    //uiHowToPlayPopup = howToPlayDocument.rootVisualElement;
+
+
+
+        //    //how to play popup logic:
+        //    howToPlayButton = uiMainMenu.Q<Button>("HowToPlayButton");
+        //    howToPlayButton.RegisterCallback<ClickEvent>(ShowHowToPlayPopup);
+
+        // Initially hide the popup
+        //uiHowToPlayPopup.style.display = DisplayStyle.None;
+
+
+        //uiHowToPlayPopup.style.display = DisplayStyle.Flex;
     }
 }
