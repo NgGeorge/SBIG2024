@@ -32,7 +32,7 @@ public static class Constants
     /// <summary>
     /// Number of customers added per difficulty level
     /// </summary>
-    public const int CustomerCountDiffMod = 1;
+    public const int CustomerCountDiffMod = 3;
     /// <summary>
     /// Maximum difficulty level, semi-arbitrary but used for customer
     /// list size and modifying delay between customers.
