@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Anteater walking
+  m_Name: BlueBunny idle
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,11 +21,11 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 649b9d8649d68be4ea66fd41d0d9bf84, type: 3}
+      value: {fileID: 21300000, guid: 997fc07c5241197459eff84c96e2696d, type: 3}
     - time: 0.25
-      value: {fileID: 21300000, guid: 5316f312b61ea5c4b9dfb1190a291e44, type: 3}
+      value: {fileID: 21300000, guid: 69e794a0da41cf84192c5cade87cf31a, type: 3}
     - time: 0.5
-      value: {fileID: 21300000, guid: 649b9d8649d68be4ea66fd41d0d9bf84, type: 3}
+      value: {fileID: 21300000, guid: 997fc07c5241197459eff84c96e2696d, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -48,9 +48,9 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 649b9d8649d68be4ea66fd41d0d9bf84, type: 3}
-    - {fileID: 21300000, guid: 5316f312b61ea5c4b9dfb1190a291e44, type: 3}
-    - {fileID: 21300000, guid: 649b9d8649d68be4ea66fd41d0d9bf84, type: 3}
+    - {fileID: 21300000, guid: 997fc07c5241197459eff84c96e2696d, type: 3}
+    - {fileID: 21300000, guid: 69e794a0da41cf84192c5cade87cf31a, type: 3}
+    - {fileID: 21300000, guid: 997fc07c5241197459eff84c96e2696d, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
