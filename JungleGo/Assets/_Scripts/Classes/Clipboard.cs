@@ -157,22 +157,25 @@ public class Clipboard : MonoBehaviour
         Debug.Log("Save Clipboard");
         int i = 0;
         var prodCountLabels = ClipboardBody.Query<Label>().ToList();
-        /*
-        // For Debugging
-        foreach (var field in prodCountLabels) {
-            Debug.Log($"Field : {field.text}");
-        }
-        foreach (var field in playerInputData[currentCustomer].Keys) {
-            Debug.Log($"PID : {playerInputData[currentCustomer][product]}");
-        }
-        */
-
         var products = new List<Product>(playerInputData[currentCustomer].Keys);
         foreach (var product in products)
         {
-            // Yeah this is working off a ton of assumptions that are probably not all going to be true 
             playerInputData[currentCustomer][product] = int.Parse(prodCountLabels[i].text);
             i++;
         }
+    }
+
+    public decimal CalculatePlayerTotal()
+    {
+        var total = 0.0M;
+        foreach (var customerData in playerInputData.Values)
+        {
+            foreach (var product in customerData.Keys)
+            {
+                total += (product.Price * customerData[product]);
+            }
+        }
+
+        return total;
     }
 }

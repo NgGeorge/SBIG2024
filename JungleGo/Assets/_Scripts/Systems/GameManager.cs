@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
     {
         var hasWon = false;
         var CustomerSales = CalculateSales();
-        var PlayerInput = CalculatePlayerInput();
+        var PlayerInput = clipboard.CalculatePlayerTotal();
 
         if ((CustomerSales == 0.0M) && (PlayerInput != 0.0M)) {
             Debug.Log("Loss for simple scenario.");
@@ -155,16 +155,6 @@ public class GameManager : MonoBehaviour
         {
            total += customer.Basket.Total; 
         }
-
-        return total;
-    }
-
-    private decimal CalculatePlayerInput()
-    {
-        decimal total = 0.0M;
-        // Mock Player input for now
-        total = 100.0M;
-        // Clipboard.GetPlayerInputs();
 
         return total;
     }
