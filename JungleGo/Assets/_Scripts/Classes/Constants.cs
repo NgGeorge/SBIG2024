@@ -25,7 +25,7 @@ public static class Constants
     public const int ObstacleTileCode = 0; // Obstacle code for initializing the board
 
     // === Level Settings ===
-    public const int MaxUniqueProducts = 12;
+    public const int MaxUniqueProducts = 9;
     public const int MaxCustomerDelaySec = 10; 
     public const int MinCustomerDelaySec = 1;
     public const int MinCustomers = 1;

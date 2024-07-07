@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 using UnityEngine;
 
@@ -8,13 +9,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public List<Customer> Customers { get; private set; }
+    public delegate void CoroutineCallback();
 
     internal List<Level> Levels { get; private set; }
 
     private int _currentLevelIndex = 0;
     private System.Random random = new System.Random();
 
-    public delegate void CoroutineCallback();
+    private Clipboard clipboard;
 
     private void Awake()
     {
@@ -43,6 +45,8 @@ public class GameManager : MonoBehaviour
         var level = Levels[_currentLevelIndex];
         level.Initialize();
         Customers = level.Customers;
+        Debug.Log($"Game Customers : {Customers.Count}");
+        clipboard = FindObjectOfType<Clipboard>();
 
         StartCoroutine(StartLevel(level, OnLevelComplete));
     }
@@ -57,6 +61,17 @@ public class GameManager : MonoBehaviour
             if (currentCustomerIndex < Customers.Count)
             {
                 Debug.Log($"Dispatching Customer {Customers[currentCustomerIndex].Name}");
+                if (currentCustomerIndex == 0)
+                {
+                    clipboard.Customers.Add(Customers.First());
+                    clipboard.Stock = InventoryManager.Instance.Stock;
+                    clipboard.AddCustomer(Customers[currentCustomerIndex]);
+                    clipboard.Initialize();
+                }
+                else 
+                {
+                    clipboard.AddCustomer(Customers[currentCustomerIndex]);
+                }
                 Customers[currentCustomerIndex].TravelToNextShelf();
                 currentCustomerIndex++;
             }
@@ -113,7 +128,7 @@ public class GameManager : MonoBehaviour
     {
         var hasWon = false;
         var CustomerSales = CalculateSales();
-        var PlayerInput = CalculatePlayerInput();
+        var PlayerInput = clipboard.CalculatePlayerTotal();
 
         if ((CustomerSales == 0.0M) && (PlayerInput != 0.0M)) {
             Debug.Log("Loss for simple scenario.");
@@ -149,15 +164,6 @@ public class GameManager : MonoBehaviour
         {
            total += customer.Basket.Total; 
         }
-
-        return total;
-    }
-
-    private decimal CalculatePlayerInput()
-    {
-        decimal total = 0.0M;
-        // Mock Player input for now
-        total = 100.0M;
 
         return total;
     }
