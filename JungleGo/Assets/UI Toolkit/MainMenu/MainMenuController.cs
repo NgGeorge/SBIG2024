@@ -4,70 +4,54 @@ using System.ComponentModel.Design.Serialization;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+//this current implementation of main menu relies on clearing and adding ui elements as needed, depending on if we're currently in the main menu or how to play page.
 public class MainMenuController : MonoBehaviour
 {
-    public VisualElement uiMainMenu;
-
+    //stuff for mainMenu:
+    private VisualElement mainMenu;
     private Button playButton;
     private Button howToPlayButton;
-    private Label howToPlayLabel;
-
-    //maybe: use Resources.Load to show a popup.uxml
-    //private UIDocument howToPlayDocument;//fill this in with the HowToPlay popup in Inspector?
-    //private VisualElement uiHowToPlayPopup;
+    
+    //stuff for howToPlay:
+    [SerializeField] private VisualTreeAsset howToPlayTemplate;//drag & drop in inspector
+    private VisualElement howToPlay;//create based on the file above
+    private Button backButton;
 
     private void Awake()
-    {     
-        uiMainMenu = GetComponent<UIDocument>().rootVisualElement;
-    }
-
-    private void OnEnable()
     {
-        //get references to the UI elements we are going to manipulate:
-        playButton = uiMainMenu.Q<Button>("playButton");
-        howToPlayButton = uiMainMenu.Q<Button>("howToPlayButton");
-        howToPlayLabel = uiMainMenu.Q<Label>("howToPlayLabel");
-
-        //assign logic to ui elements:
-        playButton.RegisterCallback<ClickEvent>(OnPlayButtonClicked);
-        howToPlayButton.RegisterCallback<ClickEvent>(OnHowToPlayButtonClicked);
+        mainMenu = GetComponent<UIDocument>().rootVisualElement;
+        SetupMainMenu();
+        SetupHowToPlayMenu();
     }
-
-    private void OnPlayButtonClicked(ClickEvent evt)
+    private void SetupHowToPlayMenu()
     {
-        gameObject.SetActive(false);
+        howToPlay = howToPlayTemplate.CloneTree();
+        backButton = howToPlay.Q<Button>("backButton");
+        backButton.clicked += BackButtonOnClicked;
     }
-
-    private void OnHowToPlayButtonClicked(ClickEvent evt)
+    private void SetupMainMenu()
     {
-        //todo
-        howToPlayLabel.text = "this is how you play the game";
+        playButton = mainMenu.Q<Button>("playButton");
+        playButton.clicked += PlayButtonOnClicked;
+        howToPlayButton = mainMenu.Q<Button>("howToPlayButton");
+        howToPlayButton.clicked += HowToPlayButtonOnClicked;
     }
-
-    private void ShowHowToPlayPopup(ClickEvent evt)
+    private void PlayButtonOnClicked()
     {
-        
-        //    howToPlayDocument = Resources.Load<UIDocument>("HowToPlayInstructions"); // Load popup document
-        //    if (howToPlayDocument != null)
-        //    {
-        //        Debug.Log("HowToPlayInstructions.uxml loaded successfully!");
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError("Failed to load HowToPlayInstructions.uxml!");
-        //    }
-        //    //uiHowToPlayPopup = howToPlayDocument.rootVisualElement;
-
-
-
-        //    //how to play popup logic:
-        //    howToPlayButton = uiMainMenu.Q<Button>("HowToPlayButton");
-        //    howToPlayButton.RegisterCallback<ClickEvent>(ShowHowToPlayPopup);
-
-        // Initially hide the popup
-        //uiHowToPlayPopup.style.display = DisplayStyle.None;
-
-
-        //uiHowToPlayPopup.style.display = DisplayStyle.Flex;
+        mainMenu.Clear();
+        //Alternate approaches:
+        //gameObject.SetActive(false);
+        //SceneManager.LoadScene("FirstLevel");
+    }
+    private void HowToPlayButtonOnClicked()
+    {
+        mainMenu.Clear();
+        mainMenu.Add(howToPlay);
+    }
+    private void BackButtonOnClicked()
+    {
+        mainMenu.Clear();
+        mainMenu.Add(playButton);
+        mainMenu.Add(howToPlayButton);
     }
 }
