@@ -168,6 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minDistance: 3
+  speechBubblePrefab: {fileID: 8758906945039595509, guid: 8a7df8d537044a94ca1044cc885c9514, type: 3}
 --- !u!114 &-1685078718667703849
 MonoBehaviour:
   m_ObjectHideFlags: 0
