@@ -11,7 +11,7 @@ public class Product : ScriptableObject
     public int intPrice;
     public (int, int) Position;
     public AudioClip Audio;
-    [SerializeField] public GameObject Target;
+    public GameObject Target;
 
     public decimal getPrice()
     {

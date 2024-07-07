@@ -15,6 +15,11 @@ public class GameManager : MonoBehaviour
 
     private int _currentLevelIndex = 0;
     private System.Random random = new System.Random();
+    
+    private GameObject[] _prefabArray;
+
+    private Vector3 _startPotision;
+    public Vector3 EndPosition;
 
     private Clipboard clipboard;
     private BasketUI basketUI;
@@ -55,6 +60,9 @@ public class GameManager : MonoBehaviour
         basket.AddProduct(ProductDatabase.Instance.GetProductById(3), 1);
         basket.AddProduct(ProductDatabase.Instance.GetProductById(4), 4);
         basketUI.OpenBasket(basket);
+        _startPotision = GameObject.FindGameObjectsWithTag("Start")[0].transform.position;
+        EndPosition = GameObject.FindGameObjectsWithTag("Exit")[0].transform.position;
+        LoadPrefabs();
 
         StartCoroutine(StartLevel(level, OnLevelComplete));
     }
@@ -62,7 +70,7 @@ public class GameManager : MonoBehaviour
     IEnumerator StartLevel(Level level, CoroutineCallback callback)
     {
         var currentCustomerIndex = 0;
-        while (true && !IsAllCustomersHaveFinished())
+        while (!IsAllCustomersHaveFinished())
         {
             yield return new WaitForSeconds(random.Next(Constants.MinCustomerDelaySec, level.DelayBetweenCustomerSec));
 
@@ -80,8 +88,21 @@ public class GameManager : MonoBehaviour
                 {
                     clipboard.AddCustomer(Customers[currentCustomerIndex]);
                 }
+
                 // TODO : This is where the customers should spawn
-                Customers[currentCustomerIndex].TravelToNextShelf();
+                GameObject customerPrefab = Instantiate(_prefabArray[random.Next(0, _prefabArray.Length)], _startPotision, Quaternion.identity);
+                
+                Component[] components = customerPrefab.GetComponents<Component>();
+                
+                foreach (Component component in components)
+                {
+                    Debug.Log("Components:" + component.GetType().Name);
+                }
+
+                CustomerHandler customerHandlerScript = customerPrefab.GetComponent<CustomerHandler>();
+                customerHandlerScript.CustomerData = Customers[currentCustomerIndex];
+
+                //Customers[currentCustomerIndex].TravelToNextShelf();
                 currentCustomerIndex++;
             }
         }
@@ -103,34 +124,6 @@ public class GameManager : MonoBehaviour
         }
 
         return isComplete;
-    }
-
-    /// <summary>
-    /// This function should be called in every update
-    /// This is the funciton for moving all customers in every update. 
-    /// Each customer will run in the order of their initilization.
-    /// </summary>
-    public void MoveAllCustomers()
-    {
-        // Print current board to the console.
-        BoardManager.Instance.PrintBoard();
-
-        // Move each customer 
-        Customers.ForEach(customer => 
-        {
-            var path = PathFinder.Instance.AStarPathfind(customer.Position, customer.GetNextProductInList().Position);
-            
-            if (path != null && path.Count > 1)
-            {
-                customer.Move(path[1].Item1, path[1].Item2);
-            }
-
-            if (customer.Position == customer.GetNextProductInList().Position)
-            {
-                Debug.Log("Customer #" + customer.Id + " achived to the position!\n");
-                // @Iain, feel free to invoke purchase here.
-            }
-        });
     }
 
     private void OnLevelComplete()
@@ -175,5 +168,20 @@ public class GameManager : MonoBehaviour
         }
 
         return total;
+    }
+
+    void LoadPrefabs()
+    {
+        var prefabFolderPath = "Prefabs/Customers";
+        // Load all prefabs in the specified folder
+        _prefabArray = Resources.LoadAll<GameObject>(prefabFolderPath);
+        if (_prefabArray.Length > 0)
+        {
+            Debug.Log($"{_prefabArray.Length} prefabs loaded from {prefabFolderPath}.");
+        }
+        else
+        {
+            Debug.LogWarning("No prefabs found in the specified folder.");
+        }
     }
 }
