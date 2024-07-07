@@ -32,9 +32,10 @@ public class CustomerHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CustomerData != null && CustomerData.GetNextProductInList() != null)
+        var product = CustomerData?.GetNextProductInList();
+        if (CustomerData != null && product != null)
         {
-            if (Vector3.Distance(transform.position, CustomerData.GetNextProductInList().Target.transform.position) > minDistance) 
+            if (Vector3.Distance(transform.position, product.Target.transform.position) > minDistance) 
             {
                 // Walk
                 if (!_animator.GetBool("IsWalking"))
@@ -42,11 +43,16 @@ public class CustomerHandler : MonoBehaviour
                     _animator.SetBool("IsWalking", true);
                 }
 
-                _agent.SetDestination(CustomerData.GetNextProductInList().Target.transform.position);
+                _agent.SetDestination(product.Target.transform.position);
             }
             else
             {
                 // Stop
+                GameObject existingGO = this.gameObject;
+                AudioSource audioSource = existingGO.AddComponent<AudioSource>();
+                audioSource.clip = product.Audio;
+                audioSource.Play();
+
                 _animator.SetBool("IsWalking", false);
                 CustomerData.TravelToNextShelf();
             }
