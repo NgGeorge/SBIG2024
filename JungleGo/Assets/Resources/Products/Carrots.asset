@@ -16,3 +16,5 @@ MonoBehaviour:
   ProductName: Carrots
   Icon: {fileID: 21300000, guid: 247a37d91803cd24da3086525373acd4, type: 3}
   intPrice: 5
+  Audio: {fileID: 8300000, guid: 3d417d522bf392f4bb7390e801628c8d, type: 3}
+  Target: {fileID: 0}

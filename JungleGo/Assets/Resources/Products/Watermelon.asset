@@ -16,4 +16,5 @@ MonoBehaviour:
   ProductName: Watermelon
   Icon: {fileID: 21300000, guid: 1795340aa38640a41a313db43f3885f7, type: 3}
   intPrice: 20
+  Audio: {fileID: 8300000, guid: 7be3fbcdd4e115047a34c9654e5d8df6, type: 3}
   Target: {fileID: 0}

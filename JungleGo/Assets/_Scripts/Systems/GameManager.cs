@@ -72,8 +72,6 @@ public class GameManager : MonoBehaviour
         var currentCustomerIndex = 0;
         while (!IsAllCustomersHaveFinished())
         {
-            yield return new WaitForSeconds(random.Next(Constants.MinCustomerDelaySec, level.DelayBetweenCustomerSec));
-
             if (currentCustomerIndex < Customers.Count)
             {
                 Debug.Log($"Dispatching Customer {Customers[currentCustomerIndex].Name}");
@@ -91,6 +89,8 @@ public class GameManager : MonoBehaviour
 
                 // TODO : This is where the customers should spawn
                 GameObject customerPrefab = Instantiate(_prefabArray[random.Next(0, _prefabArray.Length)], _startPotision, Quaternion.identity);
+                var DoorNoise = GameObject.Find("Door").GetComponent<AudioSource>();
+                DoorNoise.Play();
                 
                 Component[] components = customerPrefab.GetComponents<Component>();
                 
@@ -105,6 +105,8 @@ public class GameManager : MonoBehaviour
                 //Customers[currentCustomerIndex].TravelToNextShelf();
                 currentCustomerIndex++;
             }
+
+            yield return new WaitForSeconds(random.Next(Constants.MinCustomerDelaySec, level.DelayBetweenCustomerSec));
         }
 
         Debug.Log("Finished start routine");

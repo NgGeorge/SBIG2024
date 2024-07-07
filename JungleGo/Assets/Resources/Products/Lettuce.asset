@@ -16,4 +16,5 @@ MonoBehaviour:
   ProductName: Lettuce
   Icon: {fileID: 21300000, guid: e82a99dbfc0f1b84fa31de27aa58d44b, type: 3}
   intPrice: 10
+  Audio: {fileID: 8300000, guid: a8db67f0c2e8df24787ed01a04fd86e4, type: 3}
   Target: {fileID: 0}

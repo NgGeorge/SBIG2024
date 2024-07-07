@@ -10,6 +10,7 @@ public class Product : ScriptableObject
     public Sprite Icon;
     public int intPrice;
     public (int, int) Position;
+    public AudioClip Audio;
     public GameObject Target;
 
     public decimal getPrice()

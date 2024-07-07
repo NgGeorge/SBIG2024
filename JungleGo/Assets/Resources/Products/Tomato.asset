@@ -16,4 +16,5 @@ MonoBehaviour:
   ProductName: Tomato
   Icon: {fileID: 21300000, guid: a8abf9d9fb12ddb47a2b132f01c8a176, type: 3}
   intPrice: 3
+  Audio: {fileID: 8300000, guid: 7613b2f08cac50a45b43f109e61ebacf, type: 3}
   Target: {fileID: 0}

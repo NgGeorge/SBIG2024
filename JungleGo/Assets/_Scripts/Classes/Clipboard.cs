@@ -10,6 +10,9 @@ public class Clipboard : MonoBehaviour
     public List<Customer> Customers { get;set; }
     public Dictionary<Product, int> Stock { get; set; }
     public Dictionary<Customer, Dictionary<Product, int>> playerInputData { get;set; }
+    public AudioSource Pencil;
+    public AudioSource Eraser;
+    public AudioSource Paper;
     private VisualElement clipboardRoot { get;set; }
     private VisualElement clipboardTop { get;set; }
     private VisualElement clipboardBody { get;set; }
@@ -21,6 +24,9 @@ public class Clipboard : MonoBehaviour
         uiClipboard = GetComponent<UIDocument>();
         Customers = new List<Customer>();
         playerInputData = new Dictionary<Customer, Dictionary<Product, int>>();
+        Eraser = GameObject.Find("Eraser").GetComponent<AudioSource>();
+        Paper = GameObject.Find("Paper").GetComponent<AudioSource>();
+        Pencil = GameObject.Find("Pencil").GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -71,6 +77,7 @@ public class Clipboard : MonoBehaviour
         var count = int.Parse(prodCount.text);
         count++;
         prodCount.text = count.ToString();
+        Pencil.Play();
         SaveClipboard();
     }
 
@@ -83,6 +90,7 @@ public class Clipboard : MonoBehaviour
             count--;
             prodCount.text = count.ToString();
         }
+        Eraser.Play();
         SaveClipboard();
     }
 
@@ -91,6 +99,7 @@ public class Clipboard : MonoBehaviour
         Debug.Log("Choose next Customer");
         currentCustomerIndex = currentCustomerIndex == (Customers.Count - 1) ? 0 : currentCustomerIndex + 1;
         currentCustomer = Customers[currentCustomerIndex];
+        Paper.Play();
         UpdateClipboard();
     }
 
@@ -99,6 +108,7 @@ public class Clipboard : MonoBehaviour
         Debug.Log("Choose previous Customer");
         currentCustomerIndex = currentCustomerIndex == 0 ? Customers.Count - 1 : currentCustomerIndex - 1;
         currentCustomer = Customers[currentCustomerIndex];
+        Paper.Play();
         UpdateClipboard();
     }
 

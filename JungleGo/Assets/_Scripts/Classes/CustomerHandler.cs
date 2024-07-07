@@ -9,6 +9,8 @@ public class CustomerHandler : MonoBehaviour
 
     private Animator _animator;
 
+    private AudioSource audioSource;
+
     public Customer CustomerData;
 
     [SerializeField]
@@ -27,14 +29,18 @@ public class CustomerHandler : MonoBehaviour
 
         //  Animation
         _animator = GetComponent<Animator>();
+
+        // GameObject
+        audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (CustomerData != null && CustomerData.GetNextProductInList() != null)
+        var product = CustomerData?.GetNextProductInList();
+        if (CustomerData != null && product != null)
         {
-            if (Vector3.Distance(transform.position, CustomerData.GetNextProductInList().Target.transform.position) > minDistance) 
+            if (Vector3.Distance(transform.position, product.Target.transform.position) > minDistance) 
             {
                 // Walk
                 if (!_animator.GetBool("IsWalking"))
@@ -42,11 +48,14 @@ public class CustomerHandler : MonoBehaviour
                     _animator.SetBool("IsWalking", true);
                 }
 
-                _agent.SetDestination(CustomerData.GetNextProductInList().Target.transform.position);
+                _agent.SetDestination(product.Target.transform.position);
             }
             else
             {
                 // Stop
+                audioSource.clip = product.Audio;
+                audioSource.Play();
+
                 _animator.SetBool("IsWalking", false);
                 CustomerData.TravelToNextShelf();
             }
@@ -64,6 +73,9 @@ public class CustomerHandler : MonoBehaviour
             }
             else 
             {
+                var doorAudio = Resources.Load<AudioClip>("Sounds/Door");
+                audioSource.clip = doorAudio;
+                audioSource.Play();
                 Destroy(gameObject);
             }
             // Call destory customer logic in here.
