@@ -38,6 +38,8 @@ public class CustomerHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        var digit = Resources.Load<Sprite>($"Digits/{CustomerData.Id}");
+
         Debug.Log($"CustomerHandler Start()");
 
         // NavMesh init
@@ -51,6 +53,17 @@ public class CustomerHandler : MonoBehaviour
         // GameObject
         audioSource = gameObject.AddComponent<AudioSource>();
         basketUI = GameObject.Find("BasketUI").GetComponent<BasketUI>();
+
+        Transform childTransform = gameObject.transform.Find("Number");
+        
+        if (childTransform != null)
+        {
+            SpriteRenderer spriteRenderer = childTransform.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.sprite = digit;
+            }
+        }
     }
 
     // Update is called once per frame
