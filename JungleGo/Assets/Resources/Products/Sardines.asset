@@ -16,4 +16,5 @@ MonoBehaviour:
   ProductName: Sardines
   Icon: {fileID: 21300000, guid: d9840004142855f4d96674c65877b806, type: 3}
   intPrice: 3
+  Audio: {fileID: 8300000, guid: 22dcebe6cd350794fb929657fc3505f0, type: 3}
   Target: {fileID: 0}

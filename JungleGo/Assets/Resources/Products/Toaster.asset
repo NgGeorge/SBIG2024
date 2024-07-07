@@ -16,4 +16,5 @@ MonoBehaviour:
   ProductName: Toaster
   Icon: {fileID: 21300000, guid: 0c2694f823be4044880d120be8d8c6d0, type: 3}
   intPrice: 50
+  Audio: {fileID: 8300000, guid: 0c9423e369eff5946904c195973f8e13, type: 3}
   Target: {fileID: 0}
