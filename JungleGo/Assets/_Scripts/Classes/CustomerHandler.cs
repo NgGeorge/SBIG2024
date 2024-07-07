@@ -23,6 +23,12 @@ public class CustomerHandler : MonoBehaviour
     [SerializeField]
     public GameObject speechBubblePrefab;
 
+    private GameObject _currentSpeechBubblePrefab;
+
+    private Product _currentProduct;
+
+    private bool _isWaiting;
+
 
 
     // Start is called before the first frame update
@@ -49,7 +55,7 @@ public class CustomerHandler : MonoBehaviour
         var product = CustomerData?.GetNextProductInList();
         if (CustomerData != null && product != null)
         {
-            if (Vector3.Distance(transform.position, product.Target.transform.position) > minDistance) 
+            if (!_isWaiting && Vector3.Distance(transform.position, product.Target.transform.position) > minDistance) 
             {
                 // Walk
                 if (!_animator.GetBool("IsWalking"))
@@ -59,14 +65,11 @@ public class CustomerHandler : MonoBehaviour
 
                 _agent.SetDestination(product.Target.transform.position);
             }
-            else
+            else if (!_isWaiting)
             {
                 // Stop
-                audioSource.clip = product.Audio;
-                audioSource.Play();
-                var currentSpeechBubble = Instantiate(speechBubblePrefab, transform);
-                currentSpeechBubble.transform.localPosition = transform.position;
-                _animator.SetBool("IsWalking", false);
+                _currentProduct = product;                
+                StartCoroutine(WaitAndPerform(2f)); // Wait for 2 seconds
                 CustomerData.TravelToNextShelf();
             }
         }
@@ -102,5 +105,39 @@ public class CustomerHandler : MonoBehaviour
         basketUI.OpenBasket(CustomerData.Basket);
         Debug.Log($"{CustomerData.Basket.Products.Count} customer basket count");
         Debug.Log($"{basketUI.currentBasket.Products.Count} basket count");
+    }
+
+     IEnumerator WaitAndPerform(float waitTime)
+    {
+        _isWaiting = true;
+        WaitForTransaction();
+
+        yield return new WaitForSeconds(waitTime);
+        _isWaiting = false;
+        Destroy(_currentSpeechBubblePrefab);
+    }
+
+    void WaitForTransaction()
+    {
+        _animator.SetBool("IsWalking", false);
+
+        audioSource.clip = _currentProduct.Audio;
+        audioSource.Play();
+
+        _currentSpeechBubblePrefab = Instantiate(speechBubblePrefab, transform);
+        Transform childTransform = _currentSpeechBubblePrefab.transform.Find("Icon"); 
+        
+        if (childTransform != null)
+        {
+            SpriteRenderer spriteRenderer = childTransform.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.sprite = _currentProduct.Icon;
+            }
+        }
+
+        _currentSpeechBubblePrefab.transform.localPosition = transform.position + new Vector3(5f,15f,0);
+
+        CustomerData.Basket.AddProduct(_currentProduct);
     }
 }
