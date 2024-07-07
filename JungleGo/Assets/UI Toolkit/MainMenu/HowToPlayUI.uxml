@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; align-items: stretch; justify-content: center;">
+        <ui:Label tabindex="-1" text="&quot;Welcome to the Jungle! As a new recruit to our state-of-the-art, cashierless store JungleGo, your job is simple: count the number of products each customer takes!&#10;&#10;Count accurately, and you&apos;ll be rewarded with your baseline wage! Counting inaccurately may result in wage deductions.&#10;&#10;Now take this clipboard, and good luck!&quot;" parse-escape-sequences="true" display-tooltip-when-elided="true" style="white-space: normal; font-size: 28px; color: rgb(255, 144, 0);" />
+        <ui:Button text="Back" parse-escape-sequences="true" display-tooltip-when-elided="true" name="backButton" />
+    </ui:VisualElement>
+</ui:UXML>
