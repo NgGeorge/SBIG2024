@@ -26,13 +26,13 @@ public static class Constants
 
     // === Level Settings ===
     public const int MaxUniqueProducts = 9;
-    public const int MaxCustomerDelaySec = 15; 
+    public const int MaxCustomerDelaySec = 12; 
     public const int MinCustomerDelaySec = 5;
     public const int MinCustomers = 1;
     /// <summary>
     /// Number of customers added per difficulty level
     /// </summary>
-    public const int CustomerCountDiffMod = 3;
+    public const int CustomerCountDiffMod = 1;
     /// <summary>
     /// Maximum difficulty level, semi-arbitrary but used for customer
     /// list size and modifying delay between customers.
@@ -40,7 +40,7 @@ public static class Constants
     public const int DifficultyCap = 5;
 
     // === General Purpose ===
-    public const decimal WinThreshold = 10.0M;
+    public const decimal WinThreshold = 25.0M;
     public static readonly string[] CustomerNames = {
         "Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Hannah", "Isaac", "Jane",
         "Kate", "Liam", "Mia", "Noah", "Olivia", "Paul", "Quinn", "Rose", "Samuel", "Tara",

@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     private System.Random random = new System.Random();
     
     private GameObject[] _prefabArray;
+    private GameObject endScreen;
 
     private Vector3 _startPotision;
     public Vector3 EndPosition;
@@ -54,6 +55,8 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Game Customers : {Customers.Count}");
         clipboard = FindObjectOfType<Clipboard>();
         basketUI = FindObjectOfType<BasketUI>();
+        endScreen = GameObject.Find("EndScreen");
+        endScreen.SetActive(false);
         var basket = new Basket();
         basket.AddProduct(ProductDatabase.Instance.GetProductById(1), 1);
         basket.AddProduct(ProductDatabase.Instance.GetProductById(2), 3);
@@ -133,32 +136,9 @@ public class GameManager : MonoBehaviour
         var hasWon = false;
         var CustomerSales = CalculateSales();
         var PlayerInput = clipboard.CalculatePlayerTotal();
-
-        if ((CustomerSales == 0.0M) && (PlayerInput != 0.0M)) {
-            Debug.Log("Loss for simple scenario.");
-        } 
-        else
-        {
-            var result = (PlayerInput / CustomerSales) * 100;
-            Debug.Log($"Customer sales were ${CustomerSales.ToString("0.00")}");
-            Debug.Log($"PlayerInput was ${PlayerInput.ToString("0.00")}");
-            if (result >= (100 + Constants.WinThreshold)) 
-            {
-                // TODO : Show player charged too much money
-                Debug.Log($"Result is {result.ToString("0.00")}%, lost because the player charged too much money.");
-            }
-            else if (result <= (100 - Constants.WinThreshold)) 
-            {
-                // TODO : Show player lost the company too much money
-                Debug.Log($"Result is {result.ToString("0.00")}%, lost because the player lost too much money.");
-            } else if (result == 100) {
-                hasWon = true;
-                Debug.Log("Won with a Perfect Score");
-            } else {
-                hasWon = true;
-                Debug.Log($"Result is {result.ToString("0.00")}%, won within the margin of error +/- {Constants.WinThreshold}%.");
-            }
-        }
+        endScreen.SetActive(true);
+        EndScreen esController = endScreen.GetComponent<EndScreen>();
+        esController.ShowEndScreen(PlayerInput, CustomerSales);
     }
 
     private decimal CalculateSales()
