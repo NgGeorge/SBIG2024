@@ -6,10 +6,11 @@ using UnityEngine.UIElements;
 
 public class Clipboard : MonoBehaviour
 {
-    UIDocument uiClipboard;
+    public UIDocument uiClipboard;
     public const int clipboardRows = 3;
     public const int clipboardCols = 3;
-    public List<Customer> customers { get;set; }
+    public List<Customer> Customers { get;set; }
+    public Dictionary<Product, int> Stock { get; set; }
     public Dictionary<Customer, Dictionary<Product, int>> playerInputData { get;set; }
     public VisualElement ClipboardRoot { get;set; }
     public VisualElement ClipboardTop { get;set; }
@@ -17,28 +18,22 @@ public class Clipboard : MonoBehaviour
     private Customer currentCustomer;
     private int currentCustomerIndex;
 
-    public Clipboard(List<Customer> customers)
-    {
-        this.customers = customers;
-    }
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         uiClipboard = GetComponent<UIDocument>();
-        Initialize();
     }
 
     /// <summary>
     /// Setups the initial state of the clipboard
     /// </summary>
-    private void Initialize()
+    public void Initialize()
     {
+        Debug.Log("Initialize Clipboard");
         ClipboardRoot = uiClipboard.rootVisualElement.Q("Clipboard");
         ClipboardTop = uiClipboard.rootVisualElement.Q("ClipboardTop");
         ClipboardBody = uiClipboard.rootVisualElement.Q("ClipboardBody");
         currentCustomerIndex = 0;
-        currentCustomer = customers[currentCustomerIndex];
+        currentCustomer = Customers[currentCustomerIndex];
 
         CreatePlayerInputData();
         RegisterEvents();
@@ -47,15 +42,17 @@ public class Clipboard : MonoBehaviour
 
     private void RegisterEvents()
     {
+        Debug.Log("Registering Events on Clipboard");
         var paginationBack = ClipboardTop.Q("PageBack");
         var paginationNext = ClipboardTop.Q("PageNext");
 
         paginationBack.RegisterCallback<ClickEvent>(evt => OnClickChoosePreviousCustomer());
         paginationNext.RegisterCallback<ClickEvent>(evt => OnClickChooseNextCustomer());
 
-        var productRows = ClipboardBody.Query<VisualElement>().ToList();
+        var productRows = ClipboardBody.Children().ToList();
+        Debug.Log($"Count of rows {productRows.Count}");
         foreach (var row in productRows) {
-            var productSquares = row.Query<VisualElement>().ToList();
+            var productSquares = row.Children().ToList();
             foreach (var productSquare in productSquares) {
                 var productInput = productSquare.Q("ProductInput");
                 var decrease = productInput.Q("Decrease") as Button;
@@ -70,6 +67,7 @@ public class Clipboard : MonoBehaviour
 
     private void OnClickIncreaseProdCount(Label prodCount)
     {
+        Debug.Log("Increase Prod Count");
         var count = int.Parse(prodCount.text);
         count++;
         prodCount.text = count.ToString();
@@ -78,6 +76,7 @@ public class Clipboard : MonoBehaviour
 
     private void OnClickDecreaseProdCount(Label prodCount)
     {
+        Debug.Log("Decrease Prod Count");
         var count = int.Parse(prodCount.text);
         if (count > 0)
         {
@@ -89,15 +88,17 @@ public class Clipboard : MonoBehaviour
 
     private void OnClickChooseNextCustomer()
     {
-        currentCustomerIndex = currentCustomerIndex == customers.Count - 1 ? 0 : currentCustomerIndex - 1;
-        currentCustomer = customers[currentCustomerIndex];
+        Debug.Log("Choose next Customer");
+        currentCustomerIndex = currentCustomerIndex == (Customers.Count - 1) ? 0 : currentCustomerIndex + 1;
+        currentCustomer = Customers[currentCustomerIndex];
         UpdateClipboard();
     }
 
     private void OnClickChoosePreviousCustomer()
     {
-        currentCustomerIndex = currentCustomerIndex == 0 ? customers.Count - 1 : currentCustomerIndex + 1;
-        currentCustomer = customers[currentCustomerIndex];
+        Debug.Log("Choose previous Customer");
+        currentCustomerIndex = currentCustomerIndex == 0 ? Customers.Count - 1 : currentCustomerIndex - 1;
+        currentCustomer = Customers[currentCustomerIndex];
         UpdateClipboard();
     }
 
@@ -105,15 +106,16 @@ public class Clipboard : MonoBehaviour
     {
         playerInputData = new Dictionary<Customer, Dictionary<Product, int>>();
         var productCounts = new Dictionary<Product, int>();
-        foreach (var product in InventoryManager.Instance.Stock.Keys)
+        foreach (var product in Stock.Keys)
         {
             productCounts.TryAdd(product, 0);
         }
 
-        foreach (var customer in customers)
+        foreach (var customer in Customers)
         {
             playerInputData.TryAdd(customer, new Dictionary<Product, int>(productCounts));
         }
+        Debug.Log($"Create player input data {playerInputData}");
     }
 
 
@@ -122,6 +124,7 @@ public class Clipboard : MonoBehaviour
     /// </summary>
     public void UpdateClipboard()
     {
+        Debug.Log("Update Clipboard");
         var CustomerName = ClipboardTop.Q("CustomerName") as Label;
         var CustomerId = ClipboardTop.Q("CustomerId") as Label;
         CustomerName.text = currentCustomer.Name;
@@ -132,9 +135,9 @@ public class Clipboard : MonoBehaviour
 
         // Sneaking suspicion that if I just queried descendent product squares, it'll get it in the right order.
         int i = 0;
-        var productRows = ClipboardBody.Query<VisualElement>().ToList();
+        var productRows = ClipboardBody.Children().ToList();
         foreach (var row in productRows) {
-            var productSquares = row.Query<VisualElement>().ToList();
+            var productSquares = row.Children().ToList();
             foreach (var productSquare in productSquares) {
                 var productIcon = productSquare.Q("ProductIcon");
                 var productInput = productSquare.Q("ProductInput");
@@ -151,12 +154,24 @@ public class Clipboard : MonoBehaviour
     // Not super efficient but it's okay, if it works I'll be happy
     public void SaveClipboard()
     {
+        Debug.Log("Save Clipboard");
         int i = 0;
-        var intFields = ClipboardBody.Query<Label>().ToList();
-        foreach (var product in playerInputData[currentCustomer].Keys)
+        var prodCountLabels = ClipboardBody.Query<Label>().ToList();
+        /*
+        // For Debugging
+        foreach (var field in prodCountLabels) {
+            Debug.Log($"Field : {field.text}");
+        }
+        foreach (var field in playerInputData[currentCustomer].Keys) {
+            Debug.Log($"PID : {playerInputData[currentCustomer][product]}");
+        }
+        */
+
+        var products = new List<Product>(playerInputData[currentCustomer].Keys);
+        foreach (var product in products)
         {
             // Yeah this is working off a ton of assumptions that are probably not all going to be true 
-            playerInputData[currentCustomer][product] = int.Parse(intFields[i].text);
+            playerInputData[currentCustomer][product] = int.Parse(prodCountLabels[i].text);
             i++;
         }
     }

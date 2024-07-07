@@ -408,6 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb3525fda90f90c46b0850546c724a6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiClipboard: {fileID: 610409502}
 --- !u!114 &610409502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,5 +450,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 268841841}
   - {fileID: 450027446}
-  - {fileID: 610409503}
   - {fileID: 265621256}
+  - {fileID: 610409503}

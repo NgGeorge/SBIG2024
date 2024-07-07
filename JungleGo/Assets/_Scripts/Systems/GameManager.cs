@@ -8,14 +8,14 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public List<Customer> Customers { get; private set; }
+    public delegate void CoroutineCallback();
 
     internal List<Level> Levels { get; private set; }
 
     private int _currentLevelIndex = 0;
     private System.Random random = new System.Random();
-    private Clipboard clipboard;
 
-    public delegate void CoroutineCallback();
+    private Clipboard clipboard;
 
     private void Awake()
     {
@@ -44,7 +44,11 @@ public class GameManager : MonoBehaviour
         var level = Levels[_currentLevelIndex];
         level.Initialize();
         Customers = level.Customers;
-        clipboard = new Clipboard(Customers); 
+        Debug.Log($"Game Customers : {Customers.Count}");
+        clipboard = FindObjectOfType<Clipboard>();
+        clipboard.Customers = Customers;
+        clipboard.Stock = InventoryManager.Instance.Stock;
+        clipboard.Initialize();
 
         StartCoroutine(StartLevel(level, OnLevelComplete));
     }
@@ -160,6 +164,7 @@ public class GameManager : MonoBehaviour
         decimal total = 0.0M;
         // Mock Player input for now
         total = 100.0M;
+        // Clipboard.GetPlayerInputs();
 
         return total;
     }
