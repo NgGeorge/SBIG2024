@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class GameManager : MonoBehaviour
     public delegate void CoroutineCallback();
 
     internal List<Level> Levels { get; private set; }
+
+    private Level level;
 
     private int _currentLevelIndex = 0;
     private System.Random random = new System.Random();
@@ -49,14 +52,24 @@ public class GameManager : MonoBehaviour
     {
         // Given the limited time, let's reduce scope and maybe randomly select a level
         // for a dynamic game experience. 
-        var level = Levels[_currentLevelIndex];
+        level = Levels[_currentLevelIndex];
         level.Initialize();
         Customers = level.Customers;
         Debug.Log($"Game Customers : {Customers.Count}");
         clipboard = FindObjectOfType<Clipboard>();
+        clipboard.uiClipboard.rootVisualElement.style.display = DisplayStyle.None;
         basketUI = FindObjectOfType<BasketUI>();
+        basketUI.uiBasket.rootVisualElement.style.display = DisplayStyle.None;
         endScreen = GameObject.Find("EndScreen");
         endScreen.SetActive(false);
+    }
+
+    public void StartGame()
+    {
+        Debug.Log("Start Game");
+        GameObject.Find("MainMenu").SetActive(false);
+        clipboard.uiClipboard.rootVisualElement.style.display = DisplayStyle.Flex;
+        basketUI.uiBasket.rootVisualElement.style.display = DisplayStyle.Flex;
         _startPotision = GameObject.FindGameObjectsWithTag("Start")[0].transform.position;
         EndPosition = GameObject.FindGameObjectsWithTag("Exit")[0].transform.position;
         LoadPrefabs();
@@ -131,7 +144,6 @@ public class GameManager : MonoBehaviour
 
     private void OnLevelComplete()
     {
-        var hasWon = false;
         var CustomerSales = CalculateSales();
         var PlayerInput = clipboard.CalculatePlayerTotal();
         endScreen.SetActive(true);
