@@ -29,6 +29,13 @@ public class ProductDatabase : MonoBehaviour
         // Load all Product assets from the Resources folder
         // These products can be generated as .assets folder in Unity
         Product[] loadedProducts = Resources.LoadAll<Product>("Products");
+        
+        for (int i = 0; i < loadedProducts.Length; i++)
+        {
+            // Set positions
+            loadedProducts[i].Target = GameObject.FindGameObjectsWithTag(loadedProducts[i].ProductName)[0];
+        }
+
         products.AddRange(loadedProducts);
 
         // Alternatively, we can just create them and add them here. 
