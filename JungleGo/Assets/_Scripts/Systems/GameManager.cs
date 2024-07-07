@@ -57,12 +57,6 @@ public class GameManager : MonoBehaviour
         basketUI = FindObjectOfType<BasketUI>();
         endScreen = GameObject.Find("EndScreen");
         endScreen.SetActive(false);
-        var basket = new Basket();
-        basket.AddProduct(ProductDatabase.Instance.GetProductById(1), 1);
-        basket.AddProduct(ProductDatabase.Instance.GetProductById(2), 3);
-        basket.AddProduct(ProductDatabase.Instance.GetProductById(3), 1);
-        basket.AddProduct(ProductDatabase.Instance.GetProductById(4), 4);
-        basketUI.OpenBasket(basket);
         _startPotision = GameObject.FindGameObjectsWithTag("Start")[0].transform.position;
         EndPosition = GameObject.FindGameObjectsWithTag("Exit")[0].transform.position;
         LoadPrefabs();

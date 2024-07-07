@@ -89,11 +89,12 @@ public class Customer
 
             Debug.Log($"Customer {Name}: attempting to purchase product {product.ProductName}");
 
+            Basket.AddProduct(product);
+
             // if there is enough product left to purchase
             if (InventoryManager.Instance.PurchaseProduct(product))
             {
                 Debug.Log($"Customer {Name}: purchased product {product.ProductName}");
-                Basket.AddProduct(product);
             }
         }
         else
