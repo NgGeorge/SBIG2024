@@ -143,7 +143,7 @@ public class Clipboard : MonoBehaviour
                 var prodCount = productInput.Q("ProductCount") as Label;
                 var currentProduct = playerInputData[currentCustomer].Keys.ToList()[i];
                 prodCount.text = playerInputData[currentCustomer][currentProduct].ToString();
-                //productIcon.style.backgroundImage = currentProduct.image;
+                productIcon.style.backgroundImage = Background.FromSprite(currentProduct.Icon);
                 i++;
             }
         }

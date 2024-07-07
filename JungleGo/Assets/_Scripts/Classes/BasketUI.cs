@@ -76,7 +76,8 @@ public class BasketUI : MonoBehaviour
         Debug.Log($"Basket products : {basket.Products.Count}");
 
         int i = 0;
-        foreach (var product in basket.Products)
+        var prodList = new List<Product>(basket.Products);
+        foreach (var product in prodList)
         {
             var prod = new VisualElement();
             prod.style.width = new Length(75, LengthUnit.Pixel);
