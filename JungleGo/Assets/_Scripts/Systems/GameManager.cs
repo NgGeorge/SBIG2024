@@ -47,9 +47,6 @@ public class GameManager : MonoBehaviour
         Customers = level.Customers;
         Debug.Log($"Game Customers : {Customers.Count}");
         clipboard = FindObjectOfType<Clipboard>();
-        clipboard.Customers.Add(Customers.First());
-        clipboard.Stock = InventoryManager.Instance.Stock;
-        clipboard.Initialize();
 
         StartCoroutine(StartLevel(level, OnLevelComplete));
     }
@@ -64,7 +61,15 @@ public class GameManager : MonoBehaviour
             if (currentCustomerIndex < Customers.Count)
             {
                 Debug.Log($"Dispatching Customer {Customers[currentCustomerIndex].Name}");
-                if (currentCustomerIndex != 0) {
+                if (currentCustomerIndex == 0)
+                {
+                    clipboard.Customers.Add(Customers.First());
+                    clipboard.Stock = InventoryManager.Instance.Stock;
+                    clipboard.AddCustomer(Customers[currentCustomerIndex]);
+                    clipboard.Initialize();
+                }
+                else 
+                {
                     clipboard.AddCustomer(Customers[currentCustomerIndex]);
                 }
                 Customers[currentCustomerIndex].TravelToNextShelf();

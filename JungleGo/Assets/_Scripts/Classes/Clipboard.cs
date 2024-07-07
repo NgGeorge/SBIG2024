@@ -129,7 +129,7 @@ public class Clipboard : MonoBehaviour
         var CustomerName = ClipboardTop.Q("CustomerName") as Label;
         var CustomerId = ClipboardTop.Q("CustomerId") as Label;
         CustomerName.text = currentCustomer.Name;
-        CustomerId.text = currentCustomer.Id.ToString();
+        CustomerId.text = "ID : " + currentCustomer.Id.ToString();
 
         var CustomerIcon = ClipboardTop.Q("CustomerPicture");
         //CustomerIcon.style.backgroundImage = currentCustomer.Image;

@@ -4,8 +4,8 @@
             <ui:VisualElement name="CustomerWindow" style="flex-grow: 1; height: 150px; width: 500px; align-self: center; justify-content: space-between; align-items: center; flex-direction: row;">
                 <ui:VisualElement name="CustomerPicture" style="flex-grow: 0; height: 132px; width: 99px; background-image: url(&quot;project://database/Assets/Art/Customers/Blue%20bunny%20idle%201.png?fileID=2800000&amp;guid=997fc07c5241197459eff84c96e2696d&amp;type=3#Blue bunny idle 1&quot;); padding-top: 0; margin-top: 100px; margin-right: 0; margin-left: 150px;" />
                 <ui:VisualElement name="CustomerText" style="flex-grow: 0; height: 150px; align-items: flex-start; width: 50px; justify-content: flex-end; margin-left: 0; margin-right: 100px; margin-top: 25px;">
-                    <ui:Label tabindex="-1" text="Name : Jimothy" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CustomerName" style="-unity-font-style: bold;" />
-                    <ui:Label tabindex="-1" text="ID : 1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CustomerId" style="white-space: nowrap; -unity-font-style: bold;" />
+                    <ui:Label tabindex="-1" text="Name" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CustomerName" style="-unity-font-style: bold;" />
+                    <ui:Label tabindex="-1" text="ID" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CustomerId" style="white-space: nowrap; -unity-font-style: bold;" />
                 </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="PaginationButtons" style="flex-grow: 0; width: 225px; height: 175px; align-items: flex-end; justify-content: flex-start; flex-direction: row; align-self: auto; padding-bottom: 0; padding-right: 0; margin-right: 50px; margin-left: -15px; margin-top: -15px;">
