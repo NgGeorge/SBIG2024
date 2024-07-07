@@ -1,20 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
     public List<Customer> Customers { get; private set; }
+    public delegate void CoroutineCallback();
 
     internal List<Level> Levels { get; private set; }
 
+    private Level level;
+
     private int _currentLevelIndex = 0;
     private System.Random random = new System.Random();
+    
+    private GameObject[] _prefabArray;
+    private GameObject endScreen;
 
-    public delegate void CoroutineCallback();
+    private Vector3 _startPotision;
+    public Vector3 EndPosition;
+
+    private Clipboard clipboard;
+    private BasketUI basketUI;
 
     private void Awake()
     {
@@ -40,9 +52,27 @@ public class GameManager : MonoBehaviour
     {
         // Given the limited time, let's reduce scope and maybe randomly select a level
         // for a dynamic game experience. 
-        var level = Levels[_currentLevelIndex];
+        level = Levels[_currentLevelIndex];
         level.Initialize();
         Customers = level.Customers;
+        Debug.Log($"Game Customers : {Customers.Count}");
+        clipboard = FindObjectOfType<Clipboard>();
+        clipboard.uiClipboard.rootVisualElement.style.display = DisplayStyle.None;
+        basketUI = FindObjectOfType<BasketUI>();
+        basketUI.uiBasket.rootVisualElement.style.display = DisplayStyle.None;
+        endScreen = GameObject.Find("EndScreen");
+        endScreen.SetActive(false);
+    }
+
+    public void StartGame()
+    {
+        Debug.Log("Start Game");
+        GameObject.Find("MainMenu").SetActive(false);
+        clipboard.uiClipboard.rootVisualElement.style.display = DisplayStyle.Flex;
+        basketUI.uiBasket.rootVisualElement.style.display = DisplayStyle.Flex;
+        _startPotision = GameObject.FindGameObjectsWithTag("Start")[0].transform.position;
+        EndPosition = GameObject.FindGameObjectsWithTag("Exit")[0].transform.position;
+        LoadPrefabs();
 
         StartCoroutine(StartLevel(level, OnLevelComplete));
     }
@@ -50,16 +80,47 @@ public class GameManager : MonoBehaviour
     IEnumerator StartLevel(Level level, CoroutineCallback callback)
     {
         var currentCustomerIndex = 0;
-        while (true && !IsAllCustomersHaveFinished())
+        while (!IsAllCustomersHaveFinished())
         {
-            yield return new WaitForSeconds(random.Next(Constants.MinCustomerDelaySec, level.DelayBetweenCustomerSec));
-
             if (currentCustomerIndex < Customers.Count)
             {
                 Debug.Log($"Dispatching Customer {Customers[currentCustomerIndex].Name}");
-                Customers[currentCustomerIndex].TravelToNextShelf();
+
+                // TODO : This is where the customers should spawn
+                GameObject customerPrefab = Instantiate(_prefabArray[random.Next(0, _prefabArray.Length)], _startPotision, Quaternion.identity);
+                var DoorNoise = GameObject.Find("Door").GetComponent<AudioSource>();
+                DoorNoise.Play();
+                
+                Component[] components = customerPrefab.GetComponents<Component>();
+                
+                foreach (Component component in components)
+                {
+                    Debug.Log("Components:" + component.GetType().Name);
+                }
+
+                var customer = Customers[currentCustomerIndex];
+                CustomerHandler customerHandlerScript = customerPrefab.GetComponent<CustomerHandler>();
+                customerHandlerScript.CustomerData = customer;
+                customer.customerSprite = customerHandlerScript.GetComponent<SpriteRenderer>().sprite;
+                Debug.Log($"Is customer sprite available? {customer.customerSprite == null}");
+
+                if (currentCustomerIndex == 0)
+                {
+                    clipboard.Customers.Add(customer);
+                    clipboard.Stock = InventoryManager.Instance.Stock;
+                    clipboard.AddCustomer(customer);
+                    clipboard.Initialize();
+                }
+                else 
+                {
+                    clipboard.AddCustomer(customer);
+                }
+
+                //Customers[currentCustomerIndex].TravelToNextShelf();
                 currentCustomerIndex++;
             }
+
+            yield return new WaitForSeconds(random.Next(Constants.MinCustomerDelaySec, level.DelayBetweenCustomerSec));
         }
 
         Debug.Log("Finished start routine");
@@ -81,65 +142,13 @@ public class GameManager : MonoBehaviour
         return isComplete;
     }
 
-    /// <summary>
-    /// This function should be called in every update
-    /// This is the funciton for moving all customers in every update. 
-    /// Each customer will run in the order of their initilization.
-    /// </summary>
-    public void MoveAllCustomers()
-    {
-        // Print current board to the console.
-        BoardManager.Instance.PrintBoard();
-
-        // Move each customer 
-        Customers.ForEach(customer => 
-        {
-            var path = PathFinder.Instance.AStarPathfind(customer.Position, customer.GetNextProductInList().Position);
-            
-            if (path != null && path.Count > 1)
-            {
-                customer.Move(path[1].Item1, path[1].Item2);
-            }
-
-            if (customer.Position == customer.GetNextProductInList().Position)
-            {
-                Debug.Log("Customer #" + customer.Id + " achived to the position!\n");
-                // @Iain, feel free to invoke purchase here.
-            }
-        });
-    }
-
     private void OnLevelComplete()
     {
-        var hasWon = false;
         var CustomerSales = CalculateSales();
-        var PlayerInput = CalculatePlayerInput();
-
-        if ((CustomerSales == 0.0M) && (PlayerInput != 0.0M)) {
-            Debug.Log("Loss for simple scenario.");
-        } 
-        else
-        {
-            var result = (PlayerInput / CustomerSales) * 100;
-            Debug.Log($"Customer sales were ${CustomerSales.ToString("0.00")}");
-            Debug.Log($"PlayerInput was ${PlayerInput.ToString("0.00")}");
-            if (result >= (100 + Constants.WinThreshold)) 
-            {
-                // TODO : Show player charged too much money
-                Debug.Log($"Result is {result.ToString("0.00")}%, lost because the player charged too much money.");
-            }
-            else if (result <= (100 - Constants.WinThreshold)) 
-            {
-                // TODO : Show player lost the company too much money
-                Debug.Log($"Result is {result.ToString("0.00")}%, lost because the player lost too much money.");
-            } else if (result == 100) {
-                hasWon = true;
-                Debug.Log("Won with a Perfect Score");
-            } else {
-                hasWon = true;
-                Debug.Log($"Result is {result.ToString("0.00")}%, won within the margin of error +/- {Constants.WinThreshold}%.");
-            }
-        }
+        var PlayerInput = clipboard.CalculatePlayerTotal();
+        endScreen.SetActive(true);
+        EndScreen esController = endScreen.GetComponent<EndScreen>();
+        esController.ShowEndScreen(PlayerInput, CustomerSales);
     }
 
     private decimal CalculateSales()
@@ -153,12 +162,18 @@ public class GameManager : MonoBehaviour
         return total;
     }
 
-    private decimal CalculatePlayerInput()
+    void LoadPrefabs()
     {
-        decimal total = 0.0M;
-        // Mock Player input for now
-        total = 100.0M;
-
-        return total;
+        var prefabFolderPath = "Prefabs/Customers";
+        // Load all prefabs in the specified folder
+        _prefabArray = Resources.LoadAll<GameObject>(prefabFolderPath);
+        if (_prefabArray.Length > 0)
+        {
+            Debug.Log($"{_prefabArray.Length} prefabs loaded from {prefabFolderPath}.");
+        }
+        else
+        {
+            Debug.LogWarning("No prefabs found in the specified folder.");
+        }
     }
 }

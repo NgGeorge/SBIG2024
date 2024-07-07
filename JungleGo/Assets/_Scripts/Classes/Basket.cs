@@ -14,8 +14,10 @@ public class Basket
     public void AddProduct(Product product, int numProducts = 1)
     {
         Debug.Log($"Basket: Added {numProducts} {product.ProductName}'s to basket");
-        Products.Add(product);
-        Total += product.Price;
+        for (int i = 0; i < numProducts; i++) {
+            Products.Add(product);
+            Total += product.getPrice();
+        }
         Debug.Log($"Basket: New basket total is {Total:C}");
     }
 }

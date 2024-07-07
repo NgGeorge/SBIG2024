@@ -3,7 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Camera
+  - Carrots
+  - Lettuce
+  - Noodles
+  - Sardines
+  - Teapot
+  - Toaster
+  - Tomato
+  - Watermelon
+  - Start
+  - Exit
   layers:
   - Default
   - TransparentFX
@@ -11,7 +22,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Shelf
   - 
   - 
   - 
@@ -40,4 +51,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Shelf
+    uniqueID: 1740369951
+    locked: 0
+  - name: Cover
+    uniqueID: 3297038161
     locked: 0

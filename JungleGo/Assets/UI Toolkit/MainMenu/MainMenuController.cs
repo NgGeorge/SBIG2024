@@ -41,11 +41,7 @@ public class MainMenuController : MonoBehaviour
         SetupMainMenu();
         SetupHowToPlayMenu();
     }
-    //GameManager will call this method when the game ends:
-    public void ShowEndScreen()
-    {
-
-    }
+    
     private void SetupMainMenu()
     {
         playButton = mainMenuDynamicSection.Q<Button>("playButton");
@@ -62,9 +58,8 @@ public class MainMenuController : MonoBehaviour
     private void PlayButtonOnClicked()
     {
         mainMenu.Clear();
-        //Alternate approaches:
-        //gameObject.SetActive(false);
-        //SceneManager.LoadScene("FirstLevel");
+        var GameManager = GameObject.Find("Simulation").GetComponent<GameManager>();
+        GameManager.StartGame();
     }
     private void HowToPlayButtonOnClicked()
     {

@@ -25,9 +25,9 @@ public static class Constants
     public const int ObstacleTileCode = 0; // Obstacle code for initializing the board
 
     // === Level Settings ===
-    public const int MaxUniqueProducts = 12;
-    public const int MaxCustomerDelaySec = 10; 
-    public const int MinCustomerDelaySec = 1;
+    public const int MaxUniqueProducts = 9;
+    public const int MaxCustomerDelaySec = 20; 
+    public const int MinCustomerDelaySec = 5;
     public const int MinCustomers = 1;
     /// <summary>
     /// Number of customers added per difficulty level
@@ -40,7 +40,7 @@ public static class Constants
     public const int DifficultyCap = 5;
 
     // === General Purpose ===
-    public const decimal WinThreshold = 10.0M;
+    public const decimal WinThreshold = 25.0M;
     public static readonly string[] CustomerNames = {
         "Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Hannah", "Isaac", "Jane",
         "Kate", "Liam", "Mia", "Noah", "Olivia", "Paul", "Quinn", "Rose", "Samuel", "Tara",
