@@ -78,17 +78,6 @@ public class GameManager : MonoBehaviour
             if (currentCustomerIndex < Customers.Count)
             {
                 Debug.Log($"Dispatching Customer {Customers[currentCustomerIndex].Name}");
-                if (currentCustomerIndex == 0)
-                {
-                    clipboard.Customers.Add(Customers.First());
-                    clipboard.Stock = InventoryManager.Instance.Stock;
-                    clipboard.AddCustomer(Customers[currentCustomerIndex]);
-                    clipboard.Initialize();
-                }
-                else 
-                {
-                    clipboard.AddCustomer(Customers[currentCustomerIndex]);
-                }
 
                 // TODO : This is where the customers should spawn
                 GameObject customerPrefab = Instantiate(_prefabArray[random.Next(0, _prefabArray.Length)], _startPotision, Quaternion.identity);
@@ -102,8 +91,23 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Components:" + component.GetType().Name);
                 }
 
+                var customer = Customers[currentCustomerIndex];
                 CustomerHandler customerHandlerScript = customerPrefab.GetComponent<CustomerHandler>();
-                customerHandlerScript.CustomerData = Customers[currentCustomerIndex];
+                customerHandlerScript.CustomerData = customer;
+                customer.customerSprite = customerHandlerScript.GetComponent<SpriteRenderer>().sprite;
+                Debug.Log($"Is customer sprite available? {customer.customerSprite == null}");
+
+                if (currentCustomerIndex == 0)
+                {
+                    clipboard.Customers.Add(customer);
+                    clipboard.Stock = InventoryManager.Instance.Stock;
+                    clipboard.AddCustomer(customer);
+                    clipboard.Initialize();
+                }
+                else 
+                {
+                    clipboard.AddCustomer(customer);
+                }
 
                 //Customers[currentCustomerIndex].TravelToNextShelf();
                 currentCustomerIndex++;

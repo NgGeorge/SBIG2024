@@ -140,7 +140,7 @@ public class Clipboard : MonoBehaviour
         CustomerId.text = "ID : " + currentCustomer.Id.ToString();
 
         var CustomerIcon = clipboardTop.Q("CustomerPicture");
-        //CustomerIcon.style.backgroundImage = currentCustomer.Image;
+        CustomerIcon.style.backgroundImage = Background.FromSprite(currentCustomer.customerSprite);
 
         // Sneaking suspicion that if I just queried descendent product squares, it'll get it in the right order.
         int i = 0;

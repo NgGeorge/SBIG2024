@@ -20,6 +20,8 @@ public class Customer
     
     public (int, int) Position { get; private set; } 
 
+    public Sprite customerSprite { get; set; }
+
     public Customer(int id, string name)
     {
         Id = id;
