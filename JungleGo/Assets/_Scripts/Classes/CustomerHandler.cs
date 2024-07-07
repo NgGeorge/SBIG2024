@@ -13,6 +13,10 @@ public class CustomerHandler : MonoBehaviour
 
     public Customer CustomerData;
 
+    public BasketUI basketUI; 
+
+    private Dictionary<Product, bool> purchaseHistory;
+
     [SerializeField]
     float minDistance;
     
@@ -36,6 +40,7 @@ public class CustomerHandler : MonoBehaviour
 
         // GameObject
         audioSource = gameObject.AddComponent<AudioSource>();
+        basketUI = GameObject.Find("BasketUI").GetComponent<BasketUI>();
     }
 
     // Update is called once per frame
@@ -80,6 +85,10 @@ public class CustomerHandler : MonoBehaviour
             {
                 var DoorNoise = GameObject.Find("Door").GetComponent<AudioSource>();
                 DoorNoise.Play();
+                if (basketUI.currentCustomer == CustomerData)
+                {
+                    basketUI.CloseBasket();
+                }
                 Destroy(gameObject);
             }
             // Call destory customer logic in here.
@@ -87,4 +96,11 @@ public class CustomerHandler : MonoBehaviour
         
     }
 
+    void OnMouseDown()
+    {
+        basketUI.currentCustomer = CustomerData;
+        basketUI.OpenBasket(CustomerData.Basket);
+        Debug.Log($"{CustomerData.Basket.Products.Count} customer basket count");
+        Debug.Log($"{basketUI.currentBasket.Products.Count} basket count");
+    }
 }

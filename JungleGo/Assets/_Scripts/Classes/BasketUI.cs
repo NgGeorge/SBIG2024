@@ -11,6 +11,8 @@ public class BasketUI : MonoBehaviour
     public Basket currentBasket { get;set; }
     public bool isEnabled { get;set; }
 
+    public Customer currentCustomer;
+
     private StyleBackground openBasket;
     private StyleBackground closedBasket;
     private string openBasketPath = "Sprites/Basket_Open";
@@ -39,6 +41,8 @@ public class BasketUI : MonoBehaviour
     void FixedUpdate()
     {
         if (isEnabled) {
+            OpenBasket(currentBasket);
+            Debug.Log($"{currentBasket.Products.Count} prod count");
             var basketRows = insideBasket.Children().ToList();
             if ((Time.frameCount % 50 == 0)) {
                 var randomizedProdList = new List<Product>(currentBasket.Products);
@@ -72,6 +76,10 @@ public class BasketUI : MonoBehaviour
         insideBasket.visible = true;
         basketContainer.style.backgroundImage = openBasket; 
         var basketRows = insideBasket.Children().ToList();
+        foreach (var row in basketRows)
+        {
+            row.Clear();
+        }
         Debug.Log($"Basket rows : {basketRows.Count}");
         Debug.Log($"Basket products : {basket.Products.Count}");
 
@@ -94,6 +102,11 @@ public class BasketUI : MonoBehaviour
         Debug.Log("Closing Basket");
         isEnabled = false;
         insideBasket.visible = false;
+        var basketRows = insideBasket.Children().ToList();
+        foreach (var row in basketRows)
+        {
+            row.Clear();
+        }
         basketContainer.style.backgroundImage = closedBasket; 
     }
 }

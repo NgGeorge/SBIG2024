@@ -9,6 +9,8 @@ public class EndScreen : MonoBehaviour
 
     public void ShowEndScreen(decimal playerBill, decimal realBill)
     {
+        var MainTheme = GameObject.Find("MainTheme").GetComponent<AudioSource>();
+        MainTheme.Play();
 
         var endScreen = GetComponent<UIDocument>();
         var officialScore = endScreen.rootVisualElement.Q("OfficialScore") as Label;
