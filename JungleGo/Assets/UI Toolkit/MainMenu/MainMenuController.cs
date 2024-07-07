@@ -41,6 +41,12 @@ public class MainMenuController : MonoBehaviour
         SetupMainMenu();
         SetupHowToPlayMenu();
     }
+
+    void Start()
+    {
+        var MainTheme = GameObject.Find("MainTheme").GetComponent<AudioSource>();
+        MainTheme.Play();
+    }
     
     private void SetupMainMenu()
     {
