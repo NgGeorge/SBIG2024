@@ -1,12 +1,4 @@
-.panel {
-    align-items: center;
-}
-
-.hide {
-    display: none;
-}
-
-.unity-button {
-    width: 150px;
-    height: 150px;
+.mainMenuButton {
+    width: 100px;
+    height: 100px;
 }

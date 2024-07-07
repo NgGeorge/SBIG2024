@@ -20,6 +20,8 @@ public class MainMenuController : MonoBehaviour
     private Button playButton;
     private Button howToPlayButton;
 
+    
+
     //todo: mainMenuTemplate using the below technique, which will be called when starting a new level.
     
     //stuff for howToPlay:
