@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 //todo: a label which shows your score (accuracy)
-//todo: endscreen which has a label that tells you whether you've won or lost.
+//todo: endscreen which has a label that tells you whether you've won or lost; make it transparent with the background still visible.
 //todo: a button for next, which opens the main menu again (assumption: the game is paused in the background and doesn't start).
 //todo: improve flavor text.
 
