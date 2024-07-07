@@ -73,9 +73,8 @@ public class CustomerHandler : MonoBehaviour
             }
             else 
             {
-                var doorAudio = Resources.Load<AudioClip>("Sounds/Door");
-                audioSource.clip = doorAudio;
-                audioSource.Play();
+                var DoorNoise = GameObject.Find("Door").GetComponent<AudioSource>();
+                DoorNoise.Play();
                 Destroy(gameObject);
             }
             // Call destory customer logic in here.
