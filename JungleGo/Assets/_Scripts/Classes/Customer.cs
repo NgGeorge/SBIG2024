@@ -112,7 +112,14 @@ public class Customer
 
     public Product GetNextProductInList()
     {
-        return ShoppingList[_currentProductIndex];
+        if (_currentProductIndex < ShoppingList.Count )
+        {
+            return ShoppingList[_currentProductIndex];
+        }
+        else
+        {
+            return null;
+        }
     }
 
     private void FinishShopping()
@@ -130,13 +137,5 @@ public class Customer
     {
         Debug.Log($"Customer {Name}: Deciding to purchase from shelf");
         return Random.value > .5;
-    }
-
-    
-    public void Move(int x, int y)
-    {
-        // TODO: animation should trigger and actual UI movement should happen here.
-        BoardManager.Instance.MoveCustomerInBoard(Position.Item1, Position.Item2, x, y, Id);
-        Position = (x,y);
     }
 }

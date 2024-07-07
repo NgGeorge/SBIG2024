@@ -10,7 +10,7 @@ public class Product : ScriptableObject
     public Sprite Icon;
     public int intPrice;
     public (int, int) Position;
-    [SerializeField] public GameObject Target;
+    public GameObject Target;
 
     public decimal getPrice()
     {
