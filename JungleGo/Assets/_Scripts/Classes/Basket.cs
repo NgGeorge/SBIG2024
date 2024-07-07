@@ -15,7 +15,7 @@ public class Basket
     {
         Debug.Log($"Basket: Added {numProducts} {product.ProductName}'s to basket");
         Products.Add(product);
-        Total += product.Price;
+        Total += product.getPrice();
         Debug.Log($"Basket: New basket total is {Total:C}");
     }
 }
