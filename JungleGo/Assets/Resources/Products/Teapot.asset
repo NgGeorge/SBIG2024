@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f69db4b5a266434a8e1d9cc969e5c1f, type: 3}
   m_Name: Teapot
   m_EditorClassIdentifier: 
-  Id: 8
+  Id: 6
   ProductName: Teapot
   Icon: {fileID: 21300000, guid: 3441d56ecfea34e4d890c0756d130c6c, type: 3}
   intPrice: 1

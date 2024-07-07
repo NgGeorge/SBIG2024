@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f69db4b5a266434a8e1d9cc969e5c1f, type: 3}
   m_Name: Sardines
   m_EditorClassIdentifier: 
-  Id: 10
+  Id: 5
   ProductName: Sardines
   Icon: {fileID: 21300000, guid: d9840004142855f4d96674c65877b806, type: 3}
   intPrice: 3
