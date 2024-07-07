@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f69db4b5a266434a8e1d9cc969e5c1f, type: 3}
-  m_Name: Fern
+  m_Name: Lettuce
   m_EditorClassIdentifier: 
-  Id: 4
-  ProductName: Fern
-  Icon: {fileID: 21300000, guid: 8e0f1ea58614d1b4d990c557b080e529, type: 3}
-  intPrice: 25
+  Id: 3
+  ProductName: Lettuce
+  Icon: {fileID: 21300000, guid: e82a99dbfc0f1b84fa31de27aa58d44b, type: 3}
+  intPrice: 10
+  Target: {fileID: 0}
