@@ -11,9 +11,15 @@ public class CustomerHandler : MonoBehaviour
 
     public Customer CustomerData;
 
+    [SerializeField]
+    float minDistance;
+
+
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log($"CustomerHandler Start()");
+
         // NavMesh init
         _agent = GetComponent<NavMeshAgent>();
 		_agent.updateRotation = false;
@@ -28,24 +34,38 @@ public class CustomerHandler : MonoBehaviour
     {
         if (CustomerData != null && CustomerData.GetNextProductInList() != null)
         {
-            if (Vector3.Distance(transform.position, CustomerData.GetNextProductInList().Target.transform.position) > 1.0f) 
+            if (Vector3.Distance(transform.position, CustomerData.GetNextProductInList().Target.transform.position) > minDistance) 
             {
                 // Walk
                 if (!_animator.GetBool("IsWalking"))
                 {
                     _animator.SetBool("IsWalking", true);
                 }
-                
+
                 _agent.SetDestination(CustomerData.GetNextProductInList().Target.transform.position);
             }
             else
             {
                 // Stop
                 _animator.SetBool("IsWalking", false);
+                CustomerData.TravelToNextShelf();
             }
         }
         else 
         {
+            if (Vector3.Distance(transform.position, GameManager.Instance.EndPosition) > minDistance) 
+            {
+                if (!_animator.GetBool("IsWalking"))
+                {
+                    _animator.SetBool("IsWalking", true);
+                }
+
+                _agent.SetDestination(GameManager.Instance.EndPosition);
+            }
+            else 
+            {
+                Destroy(gameObject);
+            }
             // Call destory customer logic in here.
         }
         

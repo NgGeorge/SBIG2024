@@ -55,7 +55,7 @@ public class Level
         var cList = new List<Customer>();
         // When setting this value, consider that the player has to swap between pages.
         // Setting the limit too high can make it literally impossible to play
-        int customerLimit = Constants.MinCustomers + (difficulty * Constants.CustomerCountDiffMod);
+        int customerLimit = Constants.MinCustomers + (difficulty * Constants.CustomerCountDiffMod); //1; // todo: Constants.MinCustomers + (difficulty * Constants.CustomerCountDiffMod);
         for (int i = 0; i < customerLimit; i++) {
             var name = PickCustomerName();
             Customer newCustomer = new Customer(i + 1, name);

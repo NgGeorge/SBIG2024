@@ -76,16 +76,7 @@ public class Customer
 
         _currentProductIndex++;
 
-        if (ShouldPurchase())
-        {
-            PurchaseNextProduct();
-            TravelToNextShelf();
-        }
-        else
-        {
-            Debug.Log($"Customer {Name}: Decided not to puchase the item");
-            TravelToNextShelf();
-        }
+        PurchaseNextProduct();
     }
 
     private void PurchaseNextProduct()
@@ -137,5 +128,10 @@ public class Customer
     {
         Debug.Log($"Customer {Name}: Deciding to purchase from shelf");
         return Random.value > .5;
+    }
+
+    public int GetCurrentProductIndex()
+    {
+        return _currentProductIndex;
     }
 }

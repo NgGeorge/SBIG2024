@@ -52,9 +52,13 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3779861102915139398, guid: aedd56a7d4ed41a42985e1dc418e1364, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4542770025157317454, guid: aedd56a7d4ed41a42985e1dc418e1364, type: 3}
       propertyPath: m_Name
-      value: Customer Variant
+      value: Anteater
       objectReference: {fileID: 0}
     - target: {fileID: 4835076324820488626, guid: aedd56a7d4ed41a42985e1dc418e1364, type: 3}
       propertyPath: m_LocalScale.x
@@ -114,43 +118,19 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 4542770025157317454, guid: aedd56a7d4ed41a42985e1dc418e1364, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5415748583140247479}
+      addedObject: {fileID: 9029923050067484222}
     - targetCorrespondingSourceObject: {fileID: 4542770025157317454, guid: aedd56a7d4ed41a42985e1dc418e1364, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 9029923050067484222}
+      addedObject: {fileID: 1246291812800286436}
+    - targetCorrespondingSourceObject: {fileID: 4542770025157317454, guid: aedd56a7d4ed41a42985e1dc418e1364, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6615700028812187197}
   m_SourcePrefab: {fileID: 100100000, guid: aedd56a7d4ed41a42985e1dc418e1364, type: 3}
 --- !u!1 &6096515896841891800 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4542770025157317454, guid: aedd56a7d4ed41a42985e1dc418e1364, type: 3}
   m_PrefabInstance: {fileID: 7750701197732035734}
   m_PrefabAsset: {fileID: 0}
---- !u!50 &5415748583140247479
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6096515896841891800}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 0.0001
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!95 &9029923050067484222
 Animator:
   serializedVersion: 5
@@ -172,3 +152,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1246291812800286436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6096515896841891800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5114e5fe15437fe4385ea2b6e16f7c6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minDistance: 3
+--- !u!114 &6615700028812187197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6096515896841891800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 0
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff

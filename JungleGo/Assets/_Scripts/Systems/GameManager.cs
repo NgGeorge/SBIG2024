@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private GameObject[] _prefabArray;
 
     private Vector3 _startPotision;
+    public Vector3 EndPosition;
 
     private Clipboard clipboard;
     private BasketUI basketUI;
@@ -60,6 +61,7 @@ public class GameManager : MonoBehaviour
         basket.AddProduct(ProductDatabase.Instance.GetProductById(4), 4);
         basketUI.OpenBasket(basket);
         _startPotision = GameObject.FindGameObjectsWithTag("Start")[0].transform.position;
+        EndPosition = GameObject.FindGameObjectsWithTag("Exit")[0].transform.position;
         LoadPrefabs();
 
         StartCoroutine(StartLevel(level, OnLevelComplete));
@@ -68,7 +70,7 @@ public class GameManager : MonoBehaviour
     IEnumerator StartLevel(Level level, CoroutineCallback callback)
     {
         var currentCustomerIndex = 0;
-        while (true && !IsAllCustomersHaveFinished())
+        while (!IsAllCustomersHaveFinished())
         {
             yield return new WaitForSeconds(random.Next(Constants.MinCustomerDelaySec, level.DelayBetweenCustomerSec));
 
@@ -88,9 +90,19 @@ public class GameManager : MonoBehaviour
                 }
 
                 // TODO : This is where the customers should spawn
-                Instantiate(_prefabArray[random.Next(0, _prefabArray.Length)], _startPotision, Quaternion.identity);
+                GameObject customerPrefab = Instantiate(_prefabArray[random.Next(0, _prefabArray.Length)], _startPotision, Quaternion.identity);
+                
+                Component[] components = customerPrefab.GetComponents<Component>();
+                
+                foreach (Component component in components)
+                {
+                    Debug.Log("Components:" + component.GetType().Name);
+                }
 
-                Customers[currentCustomerIndex].TravelToNextShelf();
+                CustomerHandler customerHandlerScript = customerPrefab.GetComponent<CustomerHandler>();
+                customerHandlerScript.CustomerData = Customers[currentCustomerIndex];
+
+                //Customers[currentCustomerIndex].TravelToNextShelf();
                 currentCustomerIndex++;
             }
         }
