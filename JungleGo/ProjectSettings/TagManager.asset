@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Shelf
   - 
   - 
   - 
@@ -40,4 +40,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Shelf
+    uniqueID: 1740369951
+    locked: 0
+  - name: Cover
+    uniqueID: 3297038161
     locked: 0

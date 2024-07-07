@@ -21,6 +21,8 @@ public class Clipboard : MonoBehaviour
     private void Awake()
     {
         uiClipboard = GetComponent<UIDocument>();
+        Customers = new List<Customer>();
+        playerInputData = new Dictionary<Customer, Dictionary<Product, int>>();
     }
 
     /// <summary>
@@ -104,7 +106,6 @@ public class Clipboard : MonoBehaviour
 
     private void CreatePlayerInputData()
     {
-        playerInputData = new Dictionary<Customer, Dictionary<Product, int>>();
         var productCounts = new Dictionary<Product, int>();
         foreach (var product in Stock.Keys)
         {
@@ -177,5 +178,13 @@ public class Clipboard : MonoBehaviour
         }
 
         return total;
+    }
+
+    public void AddCustomer(Customer customer)
+    {
+        Debug.Log("AddCustomer");
+        // Play audio here later
+        Customers.Add(customer);
+        CreatePlayerInputData();
     }
 }

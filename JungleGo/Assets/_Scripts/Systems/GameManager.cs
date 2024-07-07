@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
         Customers = level.Customers;
         Debug.Log($"Game Customers : {Customers.Count}");
         clipboard = FindObjectOfType<Clipboard>();
-        clipboard.Customers = Customers;
+        clipboard.Customers.Add(Customers.First());
         clipboard.Stock = InventoryManager.Instance.Stock;
         clipboard.Initialize();
 
@@ -63,6 +64,9 @@ public class GameManager : MonoBehaviour
             if (currentCustomerIndex < Customers.Count)
             {
                 Debug.Log($"Dispatching Customer {Customers[currentCustomerIndex].Name}");
+                if (currentCustomerIndex != 0) {
+                    clipboard.AddCustomer(Customers[currentCustomerIndex]);
+                }
                 Customers[currentCustomerIndex].TravelToNextShelf();
                 currentCustomerIndex++;
             }
