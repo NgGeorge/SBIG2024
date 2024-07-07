@@ -7,28 +7,15 @@ public class EndScreen : MonoBehaviour
 {
     public UIDocument endScreen;
 
-    private Label officialScore;
-    private Label yourScore;
-    private Label status;
-
-    private Label flavorText;
-
-    void Awake()
-    {
-        endScreen = GetComponent<UIDocument>();
-    }
-
-    void Start()
-    {
-        var container = endScreen.rootVisualElement.Q("Container");
-        officialScore = container.Q("OfficialScore") as Label;
-        yourScore = container.Q("YourScore") as Label;
-        status = container.Q("Status") as Label;
-        flavorText = container.Q("FlavorText") as Label;
-    }
-
     public void ShowEndScreen(decimal playerBill, decimal realBill)
     {
+
+        var endScreen = GetComponent<UIDocument>();
+        var officialScore = endScreen.rootVisualElement.Q("OfficialScore") as Label;
+        var yourScore = endScreen.rootVisualElement.Q("YourScore") as Label;
+        var status = endScreen.rootVisualElement.Q("Status") as Label;
+        var flavorText = endScreen.rootVisualElement.Q("FlavorText") as Label;
+
         officialScore.text = "Real Sales : " + realBill.ToString("0.00");
         yourScore.text = "Your Bill : " + playerBill.ToString("0.00");
         if ((realBill == 0.0M) && (playerBill != 0.0M)) {
