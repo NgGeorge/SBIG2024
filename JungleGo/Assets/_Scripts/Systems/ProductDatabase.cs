@@ -28,11 +28,12 @@ public class ProductDatabase : MonoBehaviour
     {
         // Load all Product assets from the Resources folder
         // These products can be generated as .assets folder in Unity
-        // Product[] loadedProducts = Resources.LoadAll<Product>("ProductData");
-        // products.AddRange(loadedProducts);
+        Product[] loadedProducts = Resources.LoadAll<Product>("Products");
+        products.AddRange(loadedProducts);
 
         // Alternatively, we can just create them and add them here. 
         //products.Add(new Product { Id = 1, ProductName = "Apple", Icon = Resources.Load<Sprite>("Icons/Apple") });
+        /*
         products.Add(new Product { Id = 1, ProductName = "Apple", Price = 2.0M });
         products.Add(new Product { Id = 2, ProductName = "Orange", Price = 3.0M });
         products.Add(new Product { Id = 3, ProductName = "TV", Price = 500.0M });
@@ -48,6 +49,7 @@ public class ProductDatabase : MonoBehaviour
         products.Add(new Product { Id = 13, ProductName = "TV2", Price = 500.0M });
         products.Add(new Product { Id = 14, ProductName = "Guitar2", Price = 200.0M });
         products.Add(new Product { Id = 15, ProductName = "Pie2", Price = 20.0M });
+        */
     }
 
     public Product GetProductById(int id)

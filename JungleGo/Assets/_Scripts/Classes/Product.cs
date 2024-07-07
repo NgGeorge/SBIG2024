@@ -8,6 +8,11 @@ public class Product : ScriptableObject
     public int Id;
     public string ProductName;
     public Sprite Icon;
-    public decimal Price;
+    public int intPrice;
     public (int, int) Position; // TODO: We need to make sure each product has a aisle position during initialization.
+
+    public decimal getPrice()
+    {
+        return (decimal)intPrice;
+    }
 }

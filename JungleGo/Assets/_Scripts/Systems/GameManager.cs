@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     private System.Random random = new System.Random();
 
     private Clipboard clipboard;
+    private BasketUI basketUI;
 
     private void Awake()
     {
@@ -47,6 +48,13 @@ public class GameManager : MonoBehaviour
         Customers = level.Customers;
         Debug.Log($"Game Customers : {Customers.Count}");
         clipboard = FindObjectOfType<Clipboard>();
+        basketUI = FindObjectOfType<BasketUI>();
+        var basket = new Basket();
+        basket.AddProduct(ProductDatabase.Instance.GetProductById(1), 1);
+        basket.AddProduct(ProductDatabase.Instance.GetProductById(2), 3);
+        basket.AddProduct(ProductDatabase.Instance.GetProductById(3), 1);
+        basket.AddProduct(ProductDatabase.Instance.GetProductById(4), 4);
+        basketUI.OpenBasket(basket);
 
         StartCoroutine(StartLevel(level, OnLevelComplete));
     }
