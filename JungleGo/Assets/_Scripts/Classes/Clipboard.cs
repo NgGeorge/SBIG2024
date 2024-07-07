@@ -7,8 +7,6 @@ using UnityEngine.UIElements;
 public class Clipboard : MonoBehaviour
 {
     public UIDocument uiClipboard;
-    public const int clipboardRows = 3;
-    public const int clipboardCols = 3;
     public List<Customer> Customers { get;set; }
     public Dictionary<Product, int> Stock { get; set; }
     public Dictionary<Customer, Dictionary<Product, int>> playerInputData { get;set; }
