@@ -170,6 +170,7 @@ MonoBehaviour:
   basketUI: {fileID: 0}
   minDistance: 3
   speechBubblePrefab: {fileID: 8758906945039595509, guid: 8a7df8d537044a94ca1044cc885c9514, type: 3}
+  exit: {fileID: 21300000, guid: 5d73c018e526b5540884027517721348, type: 3}
 --- !u!114 &-1685078718667703849
 MonoBehaviour:
   m_ObjectHideFlags: 0

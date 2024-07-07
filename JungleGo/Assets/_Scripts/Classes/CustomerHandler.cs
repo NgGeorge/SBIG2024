@@ -29,6 +29,10 @@ public class CustomerHandler : MonoBehaviour
 
     private bool _isWaiting;
 
+    [SerializeField]
+    public Sprite exit;
+
+    public delegate void CoroutineCallback();
 
 
     // Start is called before the first frame update
@@ -69,7 +73,7 @@ public class CustomerHandler : MonoBehaviour
             {
                 // Stop
                 _currentProduct = product;                
-                StartCoroutine(WaitAndPerform(2f)); // Wait for 2 seconds
+                StartCoroutine(WaitAndPerform(2f, WaitForTransaction)); // Wait for 2 seconds
                 CustomerData.TravelToNextShelf();
             }
         }
@@ -81,7 +85,8 @@ public class CustomerHandler : MonoBehaviour
                 {
                     _animator.SetBool("IsWalking", true);
                 }
-
+                
+                RenderEndBuble();
                 _agent.SetDestination(GameManager.Instance.EndPosition);
             }
             else 
@@ -92,6 +97,9 @@ public class CustomerHandler : MonoBehaviour
                 {
                     basketUI.CloseBasket();
                 }
+
+                StartCoroutine(WaitAndPerform(2f, RenderEndBuble));
+                Destroy(_currentSpeechBubblePrefab);
                 Destroy(gameObject);
             }
             // Call destory customer logic in here.
@@ -107,10 +115,10 @@ public class CustomerHandler : MonoBehaviour
         Debug.Log($"{basketUI.currentBasket.Products.Count} basket count");
     }
 
-     IEnumerator WaitAndPerform(float waitTime)
+     IEnumerator WaitAndPerform(float waitTime, CoroutineCallback callback)
     {
         _isWaiting = true;
-        WaitForTransaction();
+        callback();
 
         yield return new WaitForSeconds(waitTime);
         _isWaiting = false;
@@ -139,5 +147,25 @@ public class CustomerHandler : MonoBehaviour
         _currentSpeechBubblePrefab.transform.localPosition = transform.position + new Vector3(5f,15f,0);
 
         CustomerData.Basket.AddProduct(_currentProduct);
+    }
+
+    void RenderEndBuble()
+    {
+        if (_currentSpeechBubblePrefab == null)
+        {
+            _currentSpeechBubblePrefab = Instantiate(speechBubblePrefab, transform);
+            Transform childTransform = _currentSpeechBubblePrefab.transform.Find("Icon"); 
+            
+            if (childTransform != null)
+            {
+                SpriteRenderer spriteRenderer = childTransform.GetComponent<SpriteRenderer>();
+                if (spriteRenderer != null)
+                {
+                    spriteRenderer.sprite = exit;
+                }
+            }
+        }
+
+        _currentSpeechBubblePrefab.transform.localPosition = transform.position + new Vector3(5f,15f,0);
     }
 }
