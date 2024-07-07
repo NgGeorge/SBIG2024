@@ -32,7 +32,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PinkFrog idle
+  m_Name: idle
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -47,7 +47,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 0060258fa0f4a414fb57f68eeca47efb, type: 2}
+  m_Motion: {fileID: 7400000, guid: b242fa3c680c97f4ba7a7790ad670d88, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -84,7 +84,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PinkFrog
+  m_Name: GreenFrog
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: IsWalking
@@ -113,7 +113,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PinkFrog walking
+  m_Name: walking
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -128,7 +128,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 1818512789d0841458d37fee630d46fb, type: 2}
+  m_Motion: {fileID: 7400000, guid: d6ee16cb61534104c99b70e1011ad31e, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
